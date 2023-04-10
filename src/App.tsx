@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "firebase/compat/auth";
 import { auth } from "./shared/firebase";
@@ -8,28 +9,24 @@ import io from "socket.io-client";
 import "./App.scss";
 import "./scss/Grid.scss";
 import Login from "./pages/Login/Login";
-import { useEffect, useMemo, useRef } from "react";
 import { useAppDispatch, useAppSelector } from "./store/hook";
 import { getSignIn } from "./reducer/AuthReducer";
 import AuthProtect from "./components/AuthProtect/AuthProtect";
 import MainLayout from "./Layout/MainLayout";
 import Profile from "./pages/Profile/Profile";
 
-import { getUserOnline, updateUsersTyping } from "./reducer/ChatReducer";
-import { Room, User, UserInRoom } from "./shared/type";
+import { getUserOnline } from "./reducer/ChatReducer";
 import Chat from "./pages/Chat/Chat";
-import { get } from "./service/axiosConfig";
 import JoinLink from "./pages/JoinLink/JoinLink";
 import { useCurrentRoomQuery } from "./service/Query/UseQuery";
 import Message from "./components/Message/Message";
-import { useActionQuery } from "./service/Query/ActionQuery";
 
-const socket = io("http://localhost:8000");
+const socket = io(process.env.REACT_APP_API_URL as string);
 
 const App = () => {
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
-  const { data, isSuccess } = useCurrentRoomQuery();
+  const { data } = useCurrentRoomQuery();
 
   if (data) {
     socket.emit("connect_to_room", { newRoom: data._id });
@@ -49,12 +46,6 @@ const App = () => {
     }; // Make sure we un-register Firebase observers when the component unmounts.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  // useEffect(()=>{
-  //   const handleOffline=()=>{
-
-  //   }
-  //   window.addEventListener("offline",handleOffline)
-  // },[])
   useEffect(() => {
     socket.on("receive_user_online", (data: { userOnline: string[] }) => {
       dispatch(getUserOnline(data.userOnline));
