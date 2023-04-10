@@ -1,0 +1,86 @@
+.username,
+.password,
+.email {
+  margin: 10px 0;
+  input {
+    width: 100%;
+    color: #fff;
+    border: none;
+    outline: none;
+    background-color: rgba($color: #000000, $alpha: 0.4);
+    border-radius: 5px;
+    padding: 10px;
+    &::placeholder {
+      color: #5e5e5e;
+    }
+  }
+}
+.form {
+  p {
+    color: red;
+    text-align: start;
+  }
+}
+.navigate {
+  display: flex;
+  justify-content: center;
+  nav {
+    cursor: pointer;
+    color: #5654c7;
+    text-decoration: dashed;
+  }
+}
+.submit {
+  margin-top: 10px;
+
+  input {
+    cursor: pointer;
+    border: none;
+    background-color: aquamarine;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 5px 0 #5654c7;
+    transition: all 0.3s ease;
+    &:hover {
+      box-shadow: none;
+      transform: translateY(5px);
+    }
+  }
+}
+.noti__login__status {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: rgba($color: #000000, $alpha: 0.4);
+  z-index: 1;
+  color: #000000;
+  .noti {
+    display: flex;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 300px;
+    height: 250px;
+    border-radius: 10px;
+    transform: translate(-50%, -50%);
+    background-color: #ffffff;
+    div {
+      margin: auto;
+      text-align: center;
+      p {
+        color: #2e2c2c;
+        margin: 20px 0;
+        font-weight: 500;
+      }
+      button {
+        font-size: 1.8rem;
+        background-color: rgba($color: #ec322b, $alpha: 1);
+        color: #ffffff;
+        padding: 5px;
+        border-radius: 10px;
+      }
+    }
+  }
+}

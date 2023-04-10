@@ -1,0 +1,83 @@
+.wrapper {
+  min-height: 100vh;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #000000;
+  background-color: #a19f9f;
+}
+.container {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  background-color: #fff;
+  display: flex;
+  font-size: 1.6rem;
+  background-color: #fff;
+  color: rgba($color: #000000, $alpha: 0.9);
+}
+
+nav {
+  display: flex;
+  width: 50px;
+  ul {
+    margin: auto 0;
+  }
+  li {
+    position: relative;
+    padding: 5px;
+    border-radius: 5px;
+    cursor: pointer;
+    &:hover {
+      background-color: #969696;
+    }
+  }
+  li.active {
+    &::after {
+      position: absolute;
+      right: -10px;
+      top: 0;
+      height: 100%;
+      content: "";
+      border-right: 2px solid #647fd7;
+    }
+  }
+}
+.invite-member-box {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  height: 300px;
+  width: 600px;
+  border-radius: 5px;
+  background-color: #fff;
+  z-index: 9999999;
+  .close-invite-member-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+}
+.children {
+  display: flex;
+  // flex-wrap: wrap;
+  width: 100%;
+}
+.dark {
+  &.container {
+    background-color: #2c2c2c;
+    color: rgba($color: #fff, $alpha: 0.9);
+  }
+  header {
+    button {
+      color: rgba($color: #fff, $alpha: 0.9);
+    }
+  }
+  .invite-member-box {
+    background-color: #2e2e2e;
+    .close-invite-member-btn {
+    }
+  }
+}

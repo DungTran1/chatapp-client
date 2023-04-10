@@ -1,0 +1,112 @@
+.wrapper {
+  font-size: 1.6rem;
+  position: fixed;
+  bottom: 50%;
+  left: 50%;
+  transform: translate(-50%, 50%);
+  background-color: #fff;
+  border-radius: 10px;
+  padding: 10px 20px;
+  width: 500px;
+  z-index: 999999;
+  animation: popUp 0.4s ease forwards;
+}
+
+@keyframes popUp {
+  0% {
+    bottom: -100px;
+    left: 50%;
+    opacity: 0;
+  }
+
+  to {
+    bottom: 50%;
+    left: 50%;
+    opacity: 1;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  position: relative;
+  justify-content: center;
+
+  .close-btn {
+    position: absolute;
+    top: 2px;
+    right: 2px;
+  }
+}
+.content {
+  padding: 5px 15px;
+  border-radius: 10px;
+  border: 1px solid #9b9b9b;
+  &:hover {
+    border-color: #c2c1c1;
+  }
+  &:focus-within {
+    border-color: #ff4d4d;
+  }
+  &:focus-within .chat-name {
+    > p:first-child {
+      color: #f57f7f;
+    }
+  }
+}
+
+.chat-name {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  > p:first-child {
+    color: #c5c5c5;
+  }
+}
+.chat-name-input {
+  input {
+    font-size: 2rem;
+    outline: none;
+    padding: 2px;
+    border: none;
+    width: 100%;
+  }
+}
+.cancel-save {
+  margin: 10px 0;
+  text-align: center;
+}
+.cancel-btn,
+.save-btn {
+  padding: 10px;
+  width: 49%;
+  border-radius: 5px;
+  font-size: 1.6rem;
+  font-weight: 600;
+}
+.cancel-btn {
+  background-color: #f3f3f3;
+  color: #353535;
+  margin-right: 5px;
+}
+.save-btn {
+  background-color: #f57f7f;
+  color: #f0f0f0;
+}
+//dark theme
+.dark {
+  &.wrapper {
+    background-color: #353535;
+  }
+  .chat-name-input input {
+    background-color: #353535;
+    color: #fff;
+  }
+  .cancel-btn {
+    background-color: #4b4a4a;
+    color: #fff;
+  }
+  .save-btn {
+    background-color: #ff5252;
+  }
+}

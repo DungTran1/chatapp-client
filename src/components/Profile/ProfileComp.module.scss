@@ -1,0 +1,176 @@
+.delete__btn {
+  text-align: center;
+  button {
+    border: 1px solid rgb(73 73 75);
+    padding: 15px;
+    border-radius: 25px;
+    background-color: #505050;
+    color: rgb(245, 108, 108);
+    transition: all 0.25s ease;
+    &:hover {
+      background-color: rgb(239 68 68);
+      color: rgb(255, 255, 255);
+    }
+  }
+}
+.confirm_delete {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  padding: 5px;
+  background-color: #424242;
+  border-radius: 5px;
+  transform: translate(-50%, -50%);
+  margin: 0 auto;
+  z-index: 9;
+  div {
+    display: flex;
+    justify-content: center;
+  }
+  h5 {
+    color: #000000;
+    text-align: center;
+    font-weight: 500;
+    margin-bottom: 15px;
+  }
+  button {
+    width: 80px;
+    color: #414141;
+    background-color: red;
+    border-radius: 15px;
+    box-shadow: 0 0 5px 2px red;
+    padding: 10px;
+    margin: 10px 10px;
+  }
+}
+.email,
+.name {
+  margin: 30px 0;
+  div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    button {
+      svg:hover {
+        color: rgb(14, 108, 230);
+        cursor: pointer;
+      }
+    }
+  }
+  form {
+    display: flex;
+    input {
+      font-size: 1.6rem;
+      outline: none;
+      border: none;
+      background-color: #efefefe0;
+      color: #464646;
+      border-radius: 5px;
+      padding: 0 10px;
+      margin-right: 10px;
+    }
+    &.dark {
+      input {
+        background-color: #313131;
+        color: #d4d4d4;
+      }
+    }
+  }
+  p {
+    color: #4885f3;
+    opacity: 0.6;
+  }
+}
+.change__password {
+  margin: 30px 0;
+  div {
+    form {
+      display: flex;
+      align-items: center;
+
+      input {
+        margin-right: 20px;
+        font-size: 1.6rem;
+        background-color: #efefefe0;
+        width: 60%;
+        color: #464646;
+        padding: 10px;
+        border-radius: 5px;
+        outline: none;
+        border-color: transparent;
+      }
+    }
+    form.dark {
+      input {
+        color: #d4d4d4;
+        background-color: #313131;
+      }
+      button {
+        background-color: #313131;
+        color: #d4d4d4;
+        &:hover {
+          background-color: #4b4b4b;
+        }
+      }
+    }
+    button {
+      background-color: #efefefe0;
+      color: #464646;
+      padding: 20px;
+      border-radius: 10px;
+      &:hover {
+        background-color: #e4e1e1e0;
+      }
+    }
+  }
+  h4 {
+    margin-bottom: 10px;
+  }
+}
+.verified {
+  h4 {
+    margin: 0;
+  }
+}
+
+.update__password {
+  p {
+    color: #fff;
+    margin-bottom: 20px;
+    font-weight: 600;
+  }
+  position: fixed;
+  padding: 10px;
+  border-radius: 5px;
+  top: 50%;
+  left: 50%;
+  background-color: rgb(11, 114, 248);
+  transform: translate(-50%, -50%);
+  transition: all 0.5s ease;
+  z-index: 2;
+  input {
+    background-color: rgba($color: #fff, $alpha: 0.9);
+    padding: 10px;
+    border-radius: 5px;
+    outline: none;
+    border-color: transparent;
+  }
+  button {
+    background-color: rgb(73 73 75);
+    color: rgb(255 255 255);
+    padding: 10px;
+    margin-left: 10px;
+    border-radius: 5px;
+    &:hover {
+      background-color: rgb(14, 108, 230);
+    }
+  }
+}
+
+@media (max-width: 64em) {
+  .verified {
+    display: block;
+  }
+}
+@media (max-width: 46.25em) {
+}

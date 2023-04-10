@@ -1,0 +1,110 @@
+//searchBox
+.search-user-private-chat {
+  position: relative;
+  border-bottom: 1px solid #f3f3f3;
+  padding-bottom: 5px;
+
+  input {
+    background-color: #f1f1f1;
+    font-size: 1.6rem;
+    font-weight: 400;
+    width: 100%;
+    padding: 10px;
+    outline: none;
+    border-radius: 25px;
+    border: none;
+    &::placeholder {
+      color: #bcbcbc;
+      font-size: 1.4rem;
+      font-weight: 500;
+    }
+  }
+  .close-searchTab {
+    position: absolute;
+    top: 50%;
+    right: 15px;
+    transform: translateY(-60%);
+    background: transparent;
+    width: 20px;
+    height: 20px;
+  }
+}
+.search-user-create-room {
+  position: relative;
+  margin: 15px 0;
+  & > input {
+    outline: none;
+    border: 2px solid #dbdbdb;
+    border-radius: 10px;
+    padding: 10px;
+    width: 100%;
+  }
+  .search-user-icon {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    width: 20px;
+    height: 20px;
+    transform: translateY(-60%);
+  }
+}
+//search result
+.search-result {
+  border-radius: 0 0 5px 5px;
+  padding: 5px;
+  background-color: #fff;
+  box-shadow: 0 0 5px 1px #e5e5e5;
+  width: 300px;
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+  ul {
+    li {
+      cursor: pointer;
+      margin: 5px 0;
+      display: flex;
+      align-items: center;
+      P {
+        cursor: pointer;
+        font-weight: 500;
+        margin-left: 15px;
+        font-size: 1.5rem;
+      }
+      .join-room {
+        position: absolute;
+        top: 50;
+        right: 2px;
+        color: #6b6b6b;
+      }
+    }
+  }
+}
+.search-result.users {
+  width: 520px;
+}
+.dark {
+  &.search-user-private-chat {
+    border-bottom-color: #484848;
+  }
+  input {
+    color: #fff;
+    background-color: #484848;
+  }
+  // .search-user input {
+  //   background-color: #484848;
+  // }
+  .search-result {
+    box-shadow: 0 0 5px 1px #141414;
+    background-color: #4a4a4a;
+  }
+}
+@media (max-width: 46.25em) {
+  .search-result.users {
+    width: 430px;
+  }
+}
+@media (max-width: 28.75em) {
+  .search-result.users {
+    width: 350px;
+  }
+}

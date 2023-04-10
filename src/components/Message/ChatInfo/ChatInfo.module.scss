@@ -1,0 +1,247 @@
+.message-info-wrapper {
+  overflow: auto;
+  width: 250px;
+  padding: 10px;
+  animation: showUp 0.2s ease-in-out;
+}
+.display-toggle {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  button {
+    background-color: transparent;
+    border: none;
+  }
+}
+.upload-room-image {
+  & > div {
+    text-align: center;
+  }
+  .time-online {
+    font-size: 1.6rem;
+    color: #919191;
+  }
+}
+
+@keyframes showUp {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+.option-wrapper {
+  cursor: pointer;
+}
+.show-option {
+  padding: 5px;
+  margin: 10px 0;
+  border-radius: 5px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  &:hover {
+    background-color: #f0f0f0;
+  }
+  h4 {
+    font-size: 1.6rem;
+  }
+}
+.option-section {
+  label {
+    cursor: pointer;
+  }
+}
+.option {
+  display: flex;
+  align-items: center;
+  border-radius: 5px;
+  display: none;
+  h4 {
+    padding-left: 10px;
+  }
+  button {
+    width: 30px;
+    height: 30px;
+    padding: 5px;
+    border-radius: 50%;
+    background-color: #f3f3f3;
+  }
+  &:hover {
+    background-color: #f0f0f0;
+  }
+}
+.customize-chat {
+  cursor: pointer;
+  .isShow.option-section {
+    animation: showUp 0.1s ease-in-out forwards;
+    .option {
+      display: flex;
+      padding: 5px;
+    }
+  }
+}
+.member-chat {
+  .isShow.option-section {
+    animation: showUp 0.1s ease-in-out forwards;
+
+    ul.list-member {
+      display: block;
+    }
+    .option {
+      // position: relative;
+      display: flex;
+      padding: 5px;
+    }
+    .option img {
+      width: 40px;
+      height: 40px;
+    }
+  }
+}
+
+.file-chat {
+  .isShow.option-section {
+    animation: showUp 0.1s ease-in-out forwards;
+    .option {
+      display: flex;
+      padding: 5px;
+    }
+  }
+}
+.private-and-help-chat {
+  .isShow.option-section {
+    animation: showUp 0.1s ease-in-out forwards;
+    .option {
+      display: flex;
+      padding: 5px;
+    }
+  }
+}
+.link-join {
+  border-radius: 5px;
+  padding: 5px;
+  width: 200px;
+  background-color: #fff;
+  box-shadow: 0 0 5px 1px #d7d7d7;
+
+  > div:first-child {
+    position: relative;
+    padding: 5px;
+    border: 1px solid #d3d3d3;
+    border-radius: 5px;
+  }
+  &:focus-within > div:first-child {
+    border-color: #ff5c5c;
+  }
+  > div:first-child input {
+    color: #979797;
+    cursor: pointer;
+    overflow-x: hidden;
+    max-width: 160px;
+    outline: none;
+    border: none;
+    background-color: transparent;
+  }
+  > div:first-child > button:last-child {
+    position: absolute;
+    top: 12px;
+    right: 2px;
+  }
+}
+ul.list-member {
+  display: none;
+  .add-member {
+    display: flex;
+    align-items: center;
+    font-weight: 600;
+  }
+  .add-member-icon {
+    margin-right: 10px;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    background-color: #f3f3f3;
+    svg {
+      margin: 10px;
+    }
+  }
+  li {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 10px 0;
+    > div:first-child {
+      display: flex;
+      align-items: center;
+    }
+    p {
+      padding: 0 10px;
+    }
+  }
+}
+.online {
+  margin-left: 20px;
+  width: 10px;
+  height: 10px;
+  background-color: #58ff4d;
+  border-radius: 50%;
+}
+.member-option {
+  padding: 10px;
+  border-radius: 5px;
+  box-shadow: 0 0 5px 1px #e3e3e3;
+  background-color: #ffffff;
+  font-size: 1.5rem;
+  font-weight: 800;
+  > div {
+    padding: 5px 2px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+  }
+  > div:hover {
+    background-color: #eeeeee;
+  }
+  > div + div {
+    margin-top: 5px;
+  }
+  .appointment-as-administrator,
+  .remove-user {
+    margin-left: 5px;
+  }
+}
+.dark {
+  .option {
+    button {
+      color: #fff;
+      background-color: #404040;
+    }
+  }
+  .show-option:hover,
+  .option:hover {
+    background-color: #404040;
+    button {
+      background-color: #535353;
+    }
+  }
+  .member-option {
+    background-color: #404040;
+    box-shadow: 0 0 15px 1px #444444;
+  }
+  ul.list-member .add-member-icon {
+    background-color: #484848;
+  }
+  .link-join {
+    background-color: #383838;
+    box-shadow: 0 0 5px 1px #222222;
+  }
+  .link-join > div:first-child {
+    border-color: #2c2c2c;
+  }
+}
+button {
+  background-color: transparent;
+}

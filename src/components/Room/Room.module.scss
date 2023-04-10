@@ -1,0 +1,135 @@
+.room-joined {
+  font-size: 1.6rem;
+  padding: 5px;
+  width: 310px;
+  border-left: 1px solid #e7e7e7;
+}
+.room-title {
+  position: relative;
+  h2 {
+    text-align: center;
+  }
+  button {
+    position: absolute;
+    right: 5px;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+}
+.create-room-btn {
+  padding: 10px;
+  color: #fff;
+  background: #5016df;
+  border-radius: 15px;
+}
+img {
+  object-fit: cover;
+  border-radius: 50%;
+}
+.room-list {
+  margin: 10px 0;
+  max-height: 430px;
+  overflow: auto;
+  li {
+    position: relative;
+  }
+  li a {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    margin: 5px 0;
+    padding: 10px 5px;
+    border-radius: 5px;
+    color: #000000;
+    &.currentRoom {
+      background-color: #f3f3f5;
+    }
+    & > div:last-child {
+      padding-left: 5px;
+      overflow: hidden;
+      P {
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+    }
+    &:hover {
+      background-color: #f3f3f5;
+    }
+  }
+  li a > div:nth-child(2) {
+    padding-left: 5px;
+  }
+  .user-name {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+  .user-name,
+  .last-message p {
+    max-width: 230px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .last-message {
+    margin-top: 5px;
+    display: flex;
+    align-items: center;
+  }
+  .last-message p {
+    font-weight: 300;
+    color: #65676b;
+    font-size: 1.3rem;
+  }
+  .distance-time-not-sending-message {
+    font-weight: 600;
+    border: 2px solid #fff;
+    color: #0a9f00;
+    bottom: 8px;
+    left: 20px;
+    position: absolute;
+    border-radius: 10px;
+    background-color: #dbffc8;
+    padding: 0 2px;
+    font-size: 1rem;
+    z-index: 9;
+  }
+  li .status {
+    position: absolute;
+    top: 50%;
+    right: 5px;
+    transform: translateY(-50%);
+    width: 10px;
+    height: 10px;
+    background-color: #5aff00;
+    border-radius: 50%;
+  }
+}
+//create room
+.dark {
+  border-left: 1px solid #363636;
+  .room-list .distance-time-not-sending-message {
+    border-color: #1c4615;
+    color: #53ff47;
+    background-color: #338d01;
+  }
+  .room-list li a {
+    color: #fff;
+    background-color: #484848;
+  }
+  .room-list li a:hover {
+    background-color: #484848;
+  }
+  .room-list .last-message p {
+    color: #767676;
+  }
+}
+@media (max-width: 64rem) {
+  .create-room {
+    width: 80%;
+  }
+}
+@media (max-width: 40rem) {
+  .room-joined {
+    flex: 1;
+  }
+}

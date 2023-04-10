@@ -1,0 +1,40 @@
+.wrapper {
+  padding: 5px;
+  width: 310px;
+}
+.title {
+  position: relative;
+  text-align: center;
+}
+.icon-create-room {
+  position: absolute;
+  right: 5px;
+  top: 25%;
+}
+.search {
+  border-bottom: 1px solid #f3f3f3;
+  padding-bottom: 5px;
+}
+.list-room {
+  margin: 10px 0;
+}
+.item {
+  cursor: pointer;
+  margin: 5px 0;
+  display: flex;
+  align-items: center;
+  &:hover {
+    background-color: #f3f3f3;
+  }
+}
+.item > div:last-child > div {
+  margin: 2px 0;
+}
+.room-avatar {
+  padding-right: 5px;
+}
+.dark {
+  .item:hover {
+    background-color: #4e4e4e;
+  }
+}

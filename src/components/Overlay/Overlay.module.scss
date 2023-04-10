@@ -1,0 +1,21 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background-color: #b6b6b6;
+  z-index: 9;
+  animation: overlay 0.4s ease forwards;
+}
+.overlay.dark {
+  background-color: #000000;
+}
+@keyframes overlay {
+  0% {
+    opacity: 0;
+  }
+  to {
+    opacity: 0.5;
+  }
+}

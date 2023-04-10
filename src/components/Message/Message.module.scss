@@ -1,0 +1,41 @@
+.message-wrapper {
+  font-size: 1.6rem;
+  flex: 1;
+  display: flex;
+  min-height: 500px;
+  overflow: hidden;
+  > div:first-child {
+    flex: 1;
+    height: 100%;
+    border-left: 1px solid #e7e7e7;
+    border-right: 1px solid #e7e7e7;
+    border-collapse: collapse;
+  }
+  header {
+    padding: 10px;
+    border-bottom: 1px solid #e7e7e7;
+    display: flex;
+    justify-content: space-between;
+  }
+  header > div:first-child {
+    display: flex;
+    align-items: center;
+  }
+  header > div:first-child img {
+    margin-right: 10px;
+    width: 40px;
+    height: 40px;
+  }
+  header .back-room {
+    cursor: pointer;
+  }
+}
+.dark {
+  header {
+    border-bottom: 1px solid #4e4e4e;
+  }
+  > div:first-child {
+    border-left: 1px solid #363636;
+    border-right: 1px solid #363636;
+  }
+}

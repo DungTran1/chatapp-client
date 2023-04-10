@@ -1,0 +1,119 @@
+.send-mess {
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-top: 20px;
+  form {
+    display: flex;
+    flex: 1;
+    text-align: right;
+    margin-left: 10px;
+    position: relative;
+  }
+  input {
+    width: 100%;
+    padding: 10px;
+    margin-right: 5px;
+    border: none;
+    outline: none;
+    border-radius: 25px;
+    background-color: #e7e7e7;
+    &.isActive {
+      border-radius: 0 0 15px 15px;
+    }
+  }
+
+  .message-in-image {
+    overflow-x: auto;
+    position: absolute;
+    top: -5px;
+    left: 0;
+    height: 100px;
+    transform: translateY(-95px);
+    padding: 10px;
+    width: calc(100% - 45px);
+    border-radius: 10px 10px 0 0;
+    background-color: #e7e7e7;
+    display: flex;
+    img {
+      width: 70px;
+      height: 70px;
+      border-radius: unset;
+    }
+  }
+
+  .img-preview {
+    position: relative;
+    button {
+      position: absolute;
+      top: -10px;
+      right: -10px;
+    }
+  }
+  .upload-file {
+    display: flex;
+    button {
+      padding: 5px;
+      border-radius: 10px;
+      background-color: transparent;
+    }
+  }
+  .submit-btn {
+    border-radius: 50%;
+    min-width: 40px;
+    height: 40px;
+    background-color: #dfdfdf;
+    svg {
+      transform: translate(-2px, 2px);
+    }
+  }
+  &.dark {
+    input {
+      color: #fff;
+      background-color: #363636;
+    }
+    .message-in-image {
+      background-color: #363636;
+    }
+    .submit-btn {
+      background-color: #404040;
+    }
+  }
+}
+.reply-message {
+  overflow-x: auto;
+  position: absolute;
+  top: -5px;
+  left: 0;
+  transform: translateY(calc(-100% + 20px));
+  padding: 5px;
+  width: 100%;
+  border-top: 1px solid #e7e7e7;
+  background-color: #fff;
+  z-index: 999;
+  .close-reply-btn {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+  }
+  .user-replied {
+    font-size: 1.5rem;
+  }
+  .user-name-replied {
+    font-weight: 600;
+  }
+  .message-replied {
+    font-size: 1.4rem;
+    color: #999999;
+  }
+}
+.remove-message {
+  color: #cacaca;
+  font-size: 1.6rem;
+}
+.dark {
+  .reply-message {
+    border-color: #363636;
+    background-color: #2c2c2c;
+  }
+}
