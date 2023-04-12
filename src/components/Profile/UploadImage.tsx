@@ -13,7 +13,7 @@ import { HiOutlineUpload } from "react-icons/hi";
 
 import { updateAvatar } from "../../reducer/AuthReducer";
 
-import Loading from "../Loading/Loading";
+import Loading from "../Common/Loading/Loading";
 import { post } from "../../service/axiosConfig";
 import { uploadImage } from "../../service/saveImage";
 

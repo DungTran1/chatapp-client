@@ -56,6 +56,8 @@
 .list-people-added {
   display: flex;
   margin: 15px 0;
+  height: 120px;
+  align-items: center;
   & > div {
     margin: 0 15px;
     position: relative;
@@ -70,8 +72,11 @@
   }
 }
 .user-not-added {
-  text-align: center;
-  margin: 40px 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 120px;
+  margin: 15px 0;
   color: #666666;
 }
 .list-people {

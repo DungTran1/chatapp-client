@@ -147,8 +147,19 @@
   }
   > div:first-child > button:last-child {
     position: absolute;
-    top: 12px;
+    top: 50%;
     right: 2px;
+    transform: translateY(-50%);
+  }
+}
+.accept-join-link {
+  margin: 10px 0;
+  display: flex;
+  input {
+    margin-right: 5px;
+  }
+  > p:last-child {
+    font-size: 1.2rem;
   }
 }
 ul.list-member {

@@ -48,13 +48,13 @@
       align-items: center;
     }
     .member + .member {
-      padding-bottom: 10px;
+      padding-top: 20px;
     }
   }
   .member img {
     height: 50px;
     width: 50px;
-    object-fit: contain;
+    object-fit: cover;
   }
 }
 .member > :nth-child(2) {
@@ -69,7 +69,7 @@
   width: 80%;
 }
 .set-nickname {
-  font-size: 1.4rem;
+  font-size: 1.2rem;
 }
 .change-btn {
   position: absolute;

@@ -4,11 +4,6 @@ export interface User {
   displayName: string | null;
   photoURL?: string;
 }
-export interface Users {
-  page: number;
-  users: User[];
-  total_results: number;
-}
 export interface Messages {
   page: number;
   messages: Message[];

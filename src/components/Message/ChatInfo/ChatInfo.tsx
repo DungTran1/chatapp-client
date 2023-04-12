@@ -9,7 +9,7 @@ import { post } from "../../../service/axiosConfig";
 import { useQueryClient } from "@tanstack/react-query";
 
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Loading from "../../Loading/Loading";
+import Loading from "../../Common/Loading/Loading";
 import {
   BsChevronCompactUp,
   BsFillPencilFill,
@@ -18,11 +18,7 @@ import {
   BsThreeDots,
 } from "react-icons/bs";
 import { useAppDispatch, useAppSelector } from "../../../store/hook";
-import {
-  // removeUserFromCurrentRoom,
-  // setCurrentRoom,
-  setFormPopUp,
-} from "../../../reducer/ChatReducer";
+import { setFormPopUp } from "../../../reducer/ChatReducer";
 import { Socket } from "socket.io-client";
 import {
   FaShieldAlt,
@@ -42,10 +38,11 @@ import {
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { UserInRoom } from "../../../shared/type";
 import { useQuerySelector } from "../../../service/Query/querySelector";
+import { useActionQuery } from "../../../service/Query/ActionQuery";
+import { updateAllowJoinInLink } from "../../../service/api";
 
 import styles from "./ChatInfo.module.scss";
 import classnames from "classnames/bind";
-import { updateAllowJoinInLink } from "../../../service/room";
 const cx = classnames.bind(styles);
 
 interface ChatInfoTabProps {
@@ -58,6 +55,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
 }) => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const { resetRoom } = useActionQuery();
   const [params, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
   const theme = useAppSelector((state) => state.theme.theme);
@@ -70,24 +68,21 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
 
   const uploadRoomImage = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
-      const photoRoomURL = await uploadImage(e.target.files[0]);
+      const photoURL = await uploadImage(e.target.files[0]);
       setIsLoading(true);
-      if (photoRoomURL) {
+      console.log(photoURL);
+      if (photoURL) {
         await post("auth/updateRoomProfile", {
           roomId: currentRoom?._id,
-          photoRoomURL,
+          photoURL,
         });
+        resetRoom(user?._id || "");
         setIsLoading(false);
       }
     }
   };
   const handleAppointmentAsAdministrator = (userIsAppoitment: UserInRoom) => {
     if (!currentRoom) return;
-    const setCurrRoom = {
-      ...currentRoom,
-      initiator: userIsAppoitment.user._id,
-    };
-    // dispatch(setCurrentRoom(setCurrRoom));
     socket.emit("appoitment_as_administrator", {
       admin: currentRoom?.users.find(
         (u) => u.user._id === currentRoom.initiator
@@ -120,12 +115,6 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
       const userLeave = currentRoom?.users.find(
         (u) => u.user._id === user?._id
       );
-      // dispatch(
-      //   setCurrentRoom({
-      //     ...currentRoom,
-      //     users: currentRoom?.users.filter((u) => u.user._id !== user?._id),
-      //   })
-      // );
       queryClient.setQueryData(["room", user?._id], (oldData: any) => {
         const newData = [...oldData];
         return newData.filter((d: any) => d._id !== currentRoom?._id);
@@ -138,7 +127,6 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
       return;
     }
     localStorage.removeItem("currentRoom");
-    // dispatch(setCurrentRoom(null));
     socket.emit("delete_chat_group_room", {
       roomId: currentRoom?._id,
     });
@@ -148,7 +136,6 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
   const handleAllowJoinLink = async (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    console.log(e.target.checked);
     if (!currentRoom) return;
     await updateAllowJoinInLink(currentRoom?._id, e.target.checked);
   };
@@ -241,14 +228,19 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                     <h4>Doi ten doan chat</h4>
                   </div>
                 )}
-              <label htmlFor="upload-img">
-                <div className={cx("option")}>
-                  <button>
-                    <BsImageFill size="15" color={theme ? "#fff" : "#222222"} />
-                  </button>
-                  <h4>Thay doi anh</h4>
-                </div>
-              </label>
+              {currentRoom?.type === "Group" && (
+                <label htmlFor="upload-img">
+                  <div className={cx("option")}>
+                    <button>
+                      <BsImageFill
+                        size="15"
+                        color={theme ? "#fff" : "#222222"}
+                      />
+                    </button>
+                    <h4>Thay doi anh</h4>
+                  </div>
+                </label>
+              )}
               <div
                 className={cx("option")}
                 onClick={() => dispatch(setFormPopUp("ChangeNickName"))}
@@ -279,27 +271,37 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
               })}
             >
               <ul className={cx("list-member")}>
-                <div
-                  className={cx("add-member")}
-                  onClick={() => {
-                    if (currentRoom?.type === "Private") {
-                      params.set("user-added", currentRoom.users[1].user._id);
-                      setSearchParams(params);
-                      dispatch(setFormPopUp("CreateGroupChat"));
-                      return;
-                    }
-                    dispatch(setFormPopUp("AddUserToGroupChat"));
-                  }}
-                >
-                  <div className={cx("add-member-icon")}>
-                    <AiOutlinePlus size={20} color={theme ? "#fff" : "#000"} />
+                {currentRoom?.initiator === user?._id && (
+                  <div
+                    className={cx("add-member")}
+                    onClick={() => {
+                      if (currentRoom?.type === "Private") {
+                        params.set(
+                          "user-added",
+                          currentRoom.users.find(
+                            (u) => u.user._id !== user?._id
+                          )?.user._id || ""
+                        );
+                        setSearchParams(params);
+                        dispatch(setFormPopUp("CreateGroupChat"));
+                        return;
+                      }
+                      dispatch(setFormPopUp("AddUserToGroupChat"));
+                    }}
+                  >
+                    <div className={cx("add-member-icon")}>
+                      <AiOutlinePlus
+                        size={20}
+                        color={theme ? "#fff" : "#000"}
+                      />
+                    </div>
+                    <p>
+                      {currentRoom?.type === "Private"
+                        ? "Tạo nhóm"
+                        : "Thêm thành viên"}
+                    </p>
                   </div>
-                  <p>
-                    {currentRoom?.type === "Private"
-                      ? "Tạo nhóm"
-                      : "Thêm người"}
-                  </p>
-                </div>
+                )}
                 <li className={cx("option")}>
                   <div>
                     <img src={admin?.user.photoURL} alt="" />
@@ -328,6 +330,8 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                           interactive
                           placement="top"
                           trigger="click"
+                          hideOnClick="toggle"
+                          onShow={(instance) => instance.hide()}
                           render={() => {
                             return (
                               <>
@@ -414,67 +418,69 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
               </div>
             </div>
           </div>
-          <div className={cx("private-and-help-chat", "option-wrapper")}>
-            <div
-              className={cx("show-option")}
-              onClick={() => handleShowOption("private-and-help-chat")}
-            >
-              <h4>Riêng tư và hỗ trợ</h4>
-              <button>
-                {(!isOpenOption.includes("private-and-help-chat") && (
-                  <BsChevronCompactDown color={theme ? "#fff" : ""} />
-                )) || <BsChevronCompactUp color={theme ? "#fff" : ""} />}
-              </button>
-            </div>
-
-            <div
-              className={cx("option-section", {
-                isShow: isOpenOption.includes("private-and-help-chat"),
-              })}
-            >
-              <Tippy
-                interactive
-                trigger="click"
-                placement="top"
-                render={() => {
-                  return (
-                    <div className={cx("link-join")}>
-                      <div
-                        onClick={() => {
-                          toastMessage("success", "Lưu đường dẫn thành công");
-                          navigator.clipboard.writeText(
-                            `http://localhost:3000/p/${currentRoom?._id}`
-                          );
-                        }}
-                      >
-                        <input
-                          readOnly
-                          value={`http://localhost:3000/p/${currentRoom?._id}`}
-                        />
-                        <button>
-                          <MdContentCopy size="15" color="#ff4d4d" />
-                        </button>
-                      </div>
-                      <div>
-                        <input
-                          type="checkbox"
-                          onChange={handleAllowJoinLink}
-                          defaultChecked={currentRoom?.isAcceptLink}
-                        />
-                        <p>cho phép tham gia bằng liên kết</p>
-                      </div>
-                    </div>
-                  );
-                }}
+          {currentRoom?.type === "Group" && (
+            <div className={cx("private-and-help-chat", "option-wrapper")}>
+              <div
+                className={cx("show-option")}
+                onClick={() => handleShowOption("private-and-help-chat")}
               >
-                <div className={cx("option")}>
-                  <button>
-                    <BsLink45Deg color={theme ? "#fff" : "#222222"} />
-                  </button>
-                  <h4>Tham gia lien ket</h4>
-                </div>
-              </Tippy>
-              {currentRoom?.type === "Group" && (
+                <h4>Riêng tư và hỗ trợ</h4>
+                <button>
+                  {(!isOpenOption.includes("private-and-help-chat") && (
+                    <BsChevronCompactDown color={theme ? "#fff" : ""} />
+                  )) || <BsChevronCompactUp color={theme ? "#fff" : ""} />}
+                </button>
+              </div>
+
+              <div
+                className={cx("option-section", {
+                  isShow: isOpenOption.includes("private-and-help-chat"),
+                })}
+              >
+                <Tippy
+                  interactive
+                  trigger="click"
+                  placement="top"
+                  render={() => {
+                    return (
+                      <div className={cx("link-join")}>
+                        <div
+                          onClick={() => {
+                            toastMessage("success", "Lưu đường dẫn thành công");
+                            navigator.clipboard.writeText(
+                              `${process.env.REACT_APP_DOMAIN}/r/${currentRoom?._id}`
+                            );
+                          }}
+                        >
+                          <input
+                            readOnly
+                            value={`${process.env.REACT_APP_DOMAIN}/r/${currentRoom?._id}`}
+                          />
+                          <button>
+                            <MdContentCopy size="15" color="#ff4d4d" />
+                          </button>
+                        </div>
+                        {currentRoom.initiator === user?._id && (
+                          <div className={cx("accept-join-link")}>
+                            <input
+                              type="checkbox"
+                              onChange={handleAllowJoinLink}
+                              defaultChecked={currentRoom?.isAcceptLink}
+                            />
+                            <p>cho phép tham gia bằng liên kết</p>
+                          </div>
+                        )}
+                      </div>
+                    );
+                  }}
+                >
+                  <div className={cx("option")}>
+                    <button>
+                      <BsLink45Deg color={theme ? "#fff" : "#222222"} />
+                    </button>
+                    <h4>Tham gia lien ket</h4>
+                  </div>
+                </Tippy>
                 <div
                   className={cx("option")}
                   onClick={handleDeleteChatOrLeaveRoom}
@@ -488,9 +494,9 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                       (currentRoom?.initiator !== user?._id && "Rời nhóm")}
                   </h4>
                 </div>
-              )}
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </>

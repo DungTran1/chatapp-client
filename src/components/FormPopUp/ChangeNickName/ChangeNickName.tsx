@@ -3,7 +3,7 @@ import { useQuerySelector } from "../../../service/Query/querySelector";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { FaPencilAlt } from "react-icons/fa";
 import { useAppDispatch, useAppSelector } from "../../../store/hook";
-import Overlay from "../../Overlay/Overlay";
+import Overlay from "../../Common/Overlay/Overlay";
 import { FcCheckmark } from "react-icons/fc";
 import { setFormPopUp } from "../../../reducer/ChatReducer";
 import { Socket } from "socket.io-client";

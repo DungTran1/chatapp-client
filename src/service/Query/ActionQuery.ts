@@ -4,9 +4,13 @@ import { Message, Messages, Reaction, Room, User } from "../../shared/type";
 export const useActionQuery = () => {
   const queryClient = useQueryClient();
   const CreateRoom = (user: User, room: Room) => {
-    return queryClient.setQueryData(["room", user?._id], (oldData: any) => {
-      return [...oldData, room];
-    });
+    return queryClient.setQueryData(
+      ["room", user?._id],
+      (oldData: Room[] | undefined) => {
+        if (!oldData) return undefined;
+        return [...oldData, room];
+      }
+    );
   };
   const UpdateCurrentRoom = (data: Room) => {
     queryClient.setQueryData(["currentRoom"], (oldData: Room | undefined) => ({
@@ -32,10 +36,9 @@ export const useActionQuery = () => {
       }
     );
   };
-  const AddMessage = (roomId: string, newMessage: Message) => {
-    console.log(newMessage);
+  const AddMessage = (newMessage: Message) => {
     return queryClient.setQueryData(
-      ["messages", roomId],
+      ["messages", newMessage.roomId],
       (oldData: InfiniteData<Messages> | undefined) => {
         return oldData
           ? {
@@ -78,12 +81,9 @@ export const useActionQuery = () => {
       }
     );
   };
-  const resetRoom = (userId: string, roomId?: string) => {
+  const resetRoom = (userId: string) => {
     queryClient.invalidateQueries(["room", userId]);
-    if (localStorage.getItem("currentRoom") === roomId) {
-      localStorage.removeItem("currentRoom");
-      queryClient.invalidateQueries(["currentRoom"], { exact: true });
-    }
+    queryClient.invalidateQueries(["currentRoom"], { exact: true });
   };
   const UpdateReaction = (messageId: string, user: User, name: string) => {
     queryClient.setQueryData(

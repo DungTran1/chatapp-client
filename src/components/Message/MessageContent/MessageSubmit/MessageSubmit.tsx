@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useParams } from "react-router-dom";
 import { useDropzone, FileWithPath } from "react-dropzone";
 import { Socket } from "socket.io-client";
-import { Message, User } from "../../../../shared/type";
+import { Message } from "../../../../shared/type";
 import { uploadMultiFile } from "../../../../service/saveImage";
 import { BsEmojiSmileFill, BsImage } from "react-icons/bs";
 import { RiFileGifFill } from "react-icons/ri";
@@ -20,15 +20,13 @@ const cx = classnames.bind(styles);
 
 interface MessageSubmitProps {
   socket: Socket;
-  user: User | null;
 }
-const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket, user }) => {
+const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
   const dispatch = useAppDispatch();
   const { roomId } = useParams();
+  const user = useAppSelector((state) => state.auth.user);
   const { currentRoom } = useQuerySelector();
-  const { replyMessage, chatNotificationSound } = useAppSelector(
-    (state) => state.chat
-  );
+  const { replyMessage } = useAppSelector((state) => state.chat);
   const theme = useAppSelector((state) => state.theme.theme);
   const sendMessageRef = useRef() as any;
   const [inputValue, setInputValue] = useState("");
@@ -60,6 +58,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket, user }) => {
   const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
     const sendMessage = sendMessageRef.current.value;
     if (!inputValue.trim() && files.length <= 0) {
       return;
@@ -113,10 +112,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket, user }) => {
           trigger="click"
           interactive
           zIndex={999}
-          render={(attrs) => (
-            <></>
-            // <EmojiPicker onEmojiClick={handleEmojiClick} {...attrs} />
-          )}
+          render={(attrs) => <></>}
         >
           <button type="button">
             <BsEmojiSmileFill size={20} color="#ff6565" />

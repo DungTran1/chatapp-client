@@ -4,7 +4,7 @@ import { AiFillCloseCircle } from "react-icons/ai";
 import { Socket } from "socket.io-client";
 import { setFormPopUp } from "../../../reducer/ChatReducer";
 import { useAppDispatch, useAppSelector } from "../../../store/hook";
-import Overlay from "../../Overlay/Overlay";
+import Overlay from "../../Common/Overlay/Overlay";
 
 import classnames from "classnames/bind";
 import styles from "./ChangeChatRoomName.module.scss";

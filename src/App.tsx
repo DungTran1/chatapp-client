@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "firebase/compat/auth";
 import { auth } from "./shared/firebase";
@@ -20,25 +20,44 @@ import Chat from "./pages/Chat/Chat";
 import JoinLink from "./pages/JoinLink/JoinLink";
 import { useCurrentRoomQuery } from "./service/Query/UseQuery";
 import Message from "./components/Message/Message";
+import NotFound from "./components/NotFound/NotFound";
+import { signIn } from "./service/api";
+import OfflineNetwork from "./components/Common/Loading/OfflineNetwork";
 
 const socket = io(process.env.REACT_APP_API_URL as string);
 
 const App = () => {
+  useCurrentRoomQuery();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
-  const { data } = useCurrentRoomQuery();
-
-  if (data) {
-    socket.emit("connect_to_room", { newRoom: data._id });
-  }
-
+  const [isOnline, setIsOnline] = useState(true);
+  useEffect(() => {
+    socket.emit("connect_to_room", {
+      newRoom: localStorage.getItem("currentRoom") || "",
+    });
+  }, []);
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+    };
+    const handleOffline = () => {
+      setIsOnline(false);
+    };
+    window.addEventListener("online", handleOnline);
+    window.addEventListener("offline", handleOffline);
+    return () => {
+      window.removeEventListener("online", handleOnline);
+      window.removeEventListener("offline", handleOffline);
+    };
+  }, []);
   useEffect(() => {
     const unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
       if (!user) {
         console.log("not logged");
         return;
       } else {
-        dispatch(getSignIn(user));
+        const res = await signIn(user.uid);
+        dispatch(getSignIn(res));
       }
     });
     return () => {
@@ -50,58 +69,65 @@ const App = () => {
     socket.on("receive_user_online", (data: { userOnline: string[] }) => {
       dispatch(getUserOnline(data.userOnline));
     });
+    return () => {
+      socket.disconnect();
+    };
   }, []);
-  if (navigator.onLine === true) {
+  if (navigator.onLine === true && user) {
     socket.emit("user_online", { userId: user?._id });
-  } else {
-    socket.disconnect();
   }
 
   return (
-    <Router>
-      <Routes>
-        <Route
-          path="/"
-          element={
-            <>
-              <ToastContainer />
-              <Login />
-            </>
-          }
-        />
-        <Route
-          path="/profile"
-          element={
-            <AuthProtect>
-              <MainLayout socket={socket}>
-                <Profile />
-              </MainLayout>
-            </AuthProtect>
-          }
-        />
-        <Route
-          path="/chat"
-          element={
-            <AuthProtect>
-              <MainLayout socket={socket}>
-                <Chat socket={socket} />
-              </MainLayout>
-            </AuthProtect>
-          }
-        >
-          <Route path=":roomId" element={<Message socket={socket} />} />
-        </Route>
+    <>
+      {!isOnline && <OfflineNetwork />}
 
-        <Route
-          path="/p/:roomId"
-          element={
-            <AuthProtect>
-              <JoinLink socket={socket} />
-            </AuthProtect>
-          }
-        />
-      </Routes>
-    </Router>
+      <Router>
+        <Routes>
+          <Route
+            path="/"
+            element={
+              <>
+                <ToastContainer />
+                <Login />
+              </>
+            }
+          />
+          <Route
+            path="/profile"
+            element={
+              <AuthProtect>
+                <MainLayout socket={socket}>
+                  <Profile />
+                </MainLayout>
+              </AuthProtect>
+            }
+          />
+          <Route
+            path="/chat"
+            element={
+              <AuthProtect>
+                <MainLayout socket={socket}>
+                  <Chat socket={socket} />
+                </MainLayout>
+              </AuthProtect>
+            }
+          >
+            <Route path=":roomId" element={<Message socket={socket} />} />
+          </Route>
+
+          <Route
+            path="/r/:roomId"
+            element={
+              <AuthProtect>
+                <JoinLink socket={socket} />
+              </AuthProtect>
+            }
+          />
+
+          <Route path="*" element={<NotFound />} />
+        </Routes>
+      </Router>
+    </>
   );
 };
 

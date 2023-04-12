@@ -9,7 +9,6 @@ import classnames from "classnames/bind";
 const cx = classnames.bind(styles);
 const Home = () => {
   const [changeForm, setChangeForm] = useState("signin");
-  const curUser = useAppSelector((state) => state.auth.user);
 
   return (
     <div className={cx("wrapper")}>

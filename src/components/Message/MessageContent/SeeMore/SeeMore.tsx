@@ -1,6 +1,6 @@
 import Tippy from "@tippyjs/react/headless";
 import { Socket } from "socket.io-client";
-import { Message, User } from "../../../../shared/type";
+import { Message } from "../../../../shared/type";
 import classnames from "classnames/bind";
 import styles from "./SeeMore.module.scss";
 import { BsEmojiSmile, BsThreeDotsVertical } from "react-icons/bs";
@@ -14,19 +14,18 @@ const cx = classnames.bind(styles);
 interface MoreFunctionProps {
   className: string;
   socket: Socket;
-  user: User | null;
   index: number;
   message: Message;
 }
 const MoreFunction: React.FC<MoreFunctionProps> = ({
   className,
   socket,
-  user,
   index,
   message,
 }) => {
   const dispatch = useAppDispatch();
   const { theme } = useAppSelector((state) => state.theme);
+  const user = useAppSelector((state) => state.auth.user);
   const { roomId } = useParams();
   const handleRevokeMessage = () => {
     socket.emit("revoke_message", {

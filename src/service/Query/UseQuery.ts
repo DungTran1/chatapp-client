@@ -7,14 +7,13 @@ import {
   getMessages,
   getRooms,
   getSearchUserResult,
-} from "../room";
+} from "../api";
 import { get } from "../axiosConfig";
 
-export const useRoomQuery = () => {
-  const user = useAppSelector((state) => state.auth.user);
-  const query = useQuery<Room[], Promise<Room[]>>(
-    ["room", user?._id],
-    () => getRooms(user?._id),
+export const useRoomQuery = (userId: string | undefined) => {
+  const query = useQuery<Room[], Error>(
+    ["room", userId],
+    () => getRooms(userId),
     {
       // refetchInterval: 2000,
       refetchOnWindowFocus: false,
@@ -35,7 +34,7 @@ export const useInfiniteMessageQuery = (
   roomId: string | undefined,
   skip: number
 ) => {
-  const query = useInfiniteQuery<Messages, Promise<Message>>(
+  const query = useInfiniteQuery<Messages, Error>(
     ["messages", roomId],
     ({ pageParam = 1 }) => {
       return getMessages(pageParam, roomId, skip);

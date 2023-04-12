@@ -1,22 +1,16 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import { AiFillCloseCircle, AiOutlineClose } from "react-icons/ai";
-import { useInfiniteQuery } from "@tanstack/react-query";
 import { LazyLoadImage } from "react-lazy-load-image-component";
-import Loading from "../../Loading/Loading";
-import InfiniteScroll from "react-infinite-scroll-component";
-import { ThreeCircles } from "react-loader-spinner";
 import SearchUserGroupChat from "../../Search/SearchUserGroupChat";
 import { useAppDispatch, useAppSelector } from "../../../store/hook";
-import { User, UserInRoom, Users } from "../../../shared/type";
-import styles from "./AddUserToRoomForm.module.scss";
-import classnames from "classnames/bind";
+import { User, UserInRoom } from "../../../shared/type";
 import { Socket } from "socket.io-client";
-import { getAllUserAbleAdd } from "../../../service/room";
 import { setFormPopUp } from "../../../reducer/ChatReducer";
-import { BiCheckbox } from "react-icons/bi";
-import { FcCheckmark } from "react-icons/fc";
 import { useSearchParams } from "react-router-dom";
 import { useQuerySelector } from "../../../service/Query/querySelector";
+
+import styles from "./AddUserToRoomForm.module.scss";
+import classnames from "classnames/bind";
 
 const cx = classnames.bind(styles);
 interface AddUserToRoomFormProps {
@@ -29,7 +23,7 @@ const AddUserToRoomForm: React.FC<AddUserToRoomFormProps> = ({
   socket,
   usersInCurrentRoom,
 }) => {
-  const [params, setSearchParams] = useSearchParams();
+  const [params] = useSearchParams();
   const user = useAppSelector((state) => state.auth.user);
   const { theme } = useAppSelector((state) => state.theme);
   const { currentRoom } = useQuerySelector();
@@ -89,25 +83,29 @@ const AddUserToRoomForm: React.FC<AddUserToRoomFormProps> = ({
           userAdded={userAdded}
           handleAddUserToListCreateRoom={handleAddUserToListCreateRoom}
         />
-        <div className={cx("list-people-added")}>
-          {userAdded.map((user) => {
-            return (
-              <div key={user._id}>
-                <LazyLoadImage
-                  width={60}
-                  height={60}
-                  effect="blur"
-                  src={user.photoURL}
-                  alt=""
-                />
-                <p className={cx("user-name")}>{user.displayName}</p>
-                <button onClick={() => handleRemoveUserToListCreateRoom(user)}>
-                  <AiFillCloseCircle size={15} color="#ff4f4f" />
-                </button>
-              </div>
-            );
-          })}
-        </div>
+        {userAdded.length > 0 && (
+          <div className={cx("list-people-added")}>
+            {userAdded.map((user) => {
+              return (
+                <div key={user._id}>
+                  <LazyLoadImage
+                    width={60}
+                    height={60}
+                    effect="blur"
+                    src={user.photoURL}
+                    alt=""
+                  />
+                  <p className={cx("user-name")}>{user.displayName}</p>
+                  <button
+                    onClick={() => handleRemoveUserToListCreateRoom(user)}
+                  >
+                    <AiFillCloseCircle size={15} color="#ff4f4f" />
+                  </button>
+                </div>
+              );
+            })}
+          </div>
+        )}
         {userAdded.length === 0 && (
           <h4 className={cx("user-not-added")}>Chưa chọn người dùng nào</h4>
         )}

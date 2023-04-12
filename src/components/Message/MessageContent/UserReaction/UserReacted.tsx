@@ -3,7 +3,7 @@ import Tippy from "@tippyjs/react/headless";
 import classnames from "classnames/bind";
 import { useEffect, useState } from "react";
 import { Socket } from "socket.io-client";
-import { getListUserReaction } from "../../../../service/room";
+import { getListUserReaction } from "../../../../service/api";
 import { Message, Reaction, User } from "../../../../shared/type";
 import { getReactionEmoji } from "../../../../shared/utils";
 import { useAppSelector } from "../../../../store/hook";

@@ -4,12 +4,13 @@ import { convertErrorCodeToMessage, getRandomAvatar } from "../../shared/utils";
 import { useForm } from "react-hook-form";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import ModalNotification from "./ModalNotification";
-import Loading from "../Loading/Loading";
+import Loading from "../Common/Loading/Loading";
 import styles from "./SignIn.module.scss";
 import classnames from "classnames/bind";
 import { post } from "../../service/axiosConfig";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { getSignIn } from "../../reducer/AuthReducer";
+import Title from "../Common/Title";
 const cx = classnames.bind(styles);
 interface IFormInput {
   username: string;
@@ -75,6 +76,7 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
   };
   return (
     <>
+      <Title value={"Sign Up"} />
       {isLoading && <Loading />}
       {curUser && !isLoading && (
         <ModalNotification type="success" message="Sign in successfully" />

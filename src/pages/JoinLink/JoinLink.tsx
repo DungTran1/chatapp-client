@@ -2,11 +2,13 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useAppSelector } from "../../store/hook";
 import { defaultPhoto } from "../../shared/utils";
 import { Socket } from "socket.io-client";
-import Loading from "../../components/Loading/Loading";
+import Loading from "../../components/Common/Loading/Loading";
 import { useUserJoinLink } from "../../service/Query/UseQuery";
 
 import classnames from "classnames/bind";
 import styles from "./JoinLink.module.scss";
+import Title from "../../components/Common/Title";
+
 const cx = classnames.bind(styles);
 
 interface JoinLinkProps {
@@ -17,9 +19,9 @@ const JoinLink: React.FC<JoinLinkProps> = ({ socket }) => {
   const user = useAppSelector((state) => state.auth.user);
   const { roomId } = useParams();
   const { data, isLoading } = useUserJoinLink(roomId || "");
-
   const userExist = data?.userExist;
   const isAcceptLink = data?.isAcceptLink;
+
   const handleJoinRoom = () => {
     socket.emit("join_room_with_link", {
       userJoin: user,
@@ -30,6 +32,7 @@ const JoinLink: React.FC<JoinLinkProps> = ({ socket }) => {
   if (isLoading) return <Loading />;
   return (
     <div className={cx("wrapper")}>
+      <Title value={"Join Room"} />
       <div className={cx("container")}>
         <div className={cx("photo")}>
           <img

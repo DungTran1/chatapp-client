@@ -7,9 +7,6 @@
   > div:first-child {
     flex: 1;
     height: 100%;
-    border-left: 1px solid #e7e7e7;
-    border-right: 1px solid #e7e7e7;
-    border-collapse: collapse;
   }
   header {
     padding: 10px;
@@ -32,10 +29,6 @@
 }
 .dark {
   header {
-    border-bottom: 1px solid #4e4e4e;
-  }
-  > div:first-child {
-    border-left: 1px solid #363636;
-    border-right: 1px solid #363636;
+    border-bottom: 1px solid #363636;
   }
 }

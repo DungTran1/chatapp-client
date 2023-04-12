@@ -2,7 +2,7 @@
 .search-user-private-chat {
   position: relative;
   border-bottom: 1px solid #f3f3f3;
-  padding-bottom: 5px;
+  padding: 0 10px 10px 10px;
 
   input {
     background-color: #f1f1f1;
@@ -22,8 +22,8 @@
   .close-searchTab {
     position: absolute;
     top: 50%;
-    right: 15px;
-    transform: translateY(-60%);
+    right: 20px;
+    transform: translateY(-70%);
     background: transparent;
     width: 20px;
     height: 20px;
@@ -84,15 +84,12 @@
 }
 .dark {
   &.search-user-private-chat {
-    border-bottom-color: #484848;
+    border-bottom-color: #363636;
   }
   input {
     color: #fff;
     background-color: #484848;
   }
-  // .search-user input {
-  //   background-color: #484848;
-  // }
   .search-result {
     box-shadow: 0 0 5px 1px #141414;
     background-color: #4a4a4a;

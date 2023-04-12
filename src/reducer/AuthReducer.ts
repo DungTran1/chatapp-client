@@ -14,7 +14,7 @@ const AuthReduceSlice = createSlice({
   reducers: {
     getSignIn: (state: Auth, action) => {
       state.user = {
-        _id: action.payload.uid,
+        _id: action.payload._id,
         email: action.payload.email,
         displayName: action.payload.displayName,
         photoURL: action.payload.photoURL || "",

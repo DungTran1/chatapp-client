@@ -11,7 +11,7 @@ const RoomSkeleton = () => {
     <div className={cx("wrapper", { dark: theme })}>
       <SkeletonTheme
         baseColor={theme ? "#404040" : ""}
-        highlightColor={theme ? "#5c5c5c" : ""}
+        highlightColor={theme ? "#464646" : ""}
       >
         <div className={cx("title")}>
           <Skeleton width={50} height={30} borderRadius={5} />
@@ -23,7 +23,7 @@ const RoomSkeleton = () => {
           <Skeleton width={"100%"} borderRadius={25} height={40} />
         </div>
         <div className={cx("list-room")}>
-          {new Array(9).fill("").map((_, index) => {
+          {new Array(6).fill("").map((_, index) => {
             return (
               <div className={cx("item")} key={index}>
                 <div className={cx("room-avatar")}>
@@ -34,7 +34,7 @@ const RoomSkeleton = () => {
                     <Skeleton borderRadius={5} width={150} height={18} />
                   </div>
                   <div>
-                    <Skeleton borderRadius={5} width={180} height={15} />
+                    <Skeleton borderRadius={15} width={180} height={15} />
                   </div>
                 </div>
               </div>

@@ -72,15 +72,15 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
       return display?.nickname || display?.user.displayName;
     }
   };
+
   const handleTakeMessage = (room: Room) => {
     localStorage.setItem("currentRoom", room._id);
-    UpdateCurrentRoom(room);
-    // dispatch(setCurrentRoom(room));
     socket.emit("connect_to_room", {
       oldRoom: currentRoom?._id,
       newRoom: room._id,
       userId: user?._id,
     });
+    UpdateCurrentRoom(room);
   };
 
   const renderLastMessage = (room: Room) => {
@@ -174,7 +174,7 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
     <div className={`${cx("room-joined", { dark: theme })} `}>
       <div>
         <div className={cx("room-title")}>
-          <h2>Chat</h2>
+          <h4>Chat</h4>
           <button onClick={() => dispatch(setFormPopUp("CreateGroupChat"))}>
             <BsPencilSquare size="20" color={theme ? "#fff" : ""} />
           </button>

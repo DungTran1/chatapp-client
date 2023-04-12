@@ -1,12 +1,13 @@
 .room-joined {
   font-size: 1.6rem;
-  padding: 5px;
   width: 310px;
   border-left: 1px solid #e7e7e7;
+  border-right: 1px solid #e7e7e7;
 }
 .room-title {
   position: relative;
-  h2 {
+  padding: 15px;
+  h4 {
     text-align: center;
   }
   button {
@@ -27,7 +28,8 @@ img {
   border-radius: 50%;
 }
 .room-list {
-  margin: 10px 0;
+  padding: 5px;
+  margin: 5px 0;
   max-height: 430px;
   overflow: auto;
   li {
@@ -39,7 +41,7 @@ img {
     align-items: center;
     margin: 5px 0;
     padding: 10px 5px;
-    border-radius: 5px;
+    border-radius: 10px;
     color: #000000;
     &.currentRoom {
       background-color: #f3f3f5;
@@ -57,7 +59,7 @@ img {
     }
   }
   li a > div:nth-child(2) {
-    padding-left: 5px;
+    padding-left: 10px;
   }
   .user-name {
     font-size: 1.5rem;
@@ -65,7 +67,7 @@ img {
   }
   .user-name,
   .last-message p {
-    max-width: 230px;
+    max-width: 200px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -107,6 +109,7 @@ img {
 //create room
 .dark {
   border-left: 1px solid #363636;
+  border-right: 1px solid #363636;
   .room-list .distance-time-not-sending-message {
     border-color: #1c4615;
     color: #53ff47;
@@ -114,7 +117,9 @@ img {
   }
   .room-list li a {
     color: #fff;
-    background-color: #484848;
+  }
+  .room-list li a.currentRoom {
+    background-color: #363636;
   }
   .room-list li a:hover {
     background-color: #484848;

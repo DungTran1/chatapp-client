@@ -1,16 +1,10 @@
-import { Swiper, SwiperSlide, useSwiperSlide } from "swiper/react";
+import { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
 
-import "swiper/css";
-import "swiper/css/pagination";
-import "swiper/css/navigation"; // Navigation module
-import { Pagination, Navigation } from "swiper";
-import * as ReactDOMServer from "react-dom/server";
-// Import Swiper styles
 import "swiper/css";
 import classnames from "classnames/bind";
 import styles from "./Media.module.scss";
 import { Media } from "../../shared/type";
-import { Fragment, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 const cx = classnames.bind(styles);
 interface ListMediaProps {

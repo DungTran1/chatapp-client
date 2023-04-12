@@ -1,23 +1,16 @@
-import React, {
-  useEffect,
-  Fragment,
-  useRef,
-  useMemo,
-  useCallback,
-} from "react";
+import React, { Fragment, useMemo, useCallback } from "react";
 import { RotatingLines } from "react-loader-spinner";
-import { Message, Messages, User } from "../../../shared/type";
+import { Message, Messages } from "../../../shared/type";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import InfiniteScroll from "react-infinite-scroll-component";
 
-import MoreFunction from "./SeeMore/SeeMore";
+import SeeMore from "./SeeMore/SeeMore";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Socket } from "socket.io-client";
 import { useAppDispatch, useAppSelector } from "../../../store/hook";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
-import Loading from "../../Loading/Loading";
 import UserReacted from "./UserReaction/UserReacted";
 import MessageTyping from "./MessageTyping/MessageTyping";
 
@@ -35,9 +28,8 @@ interface MessageContentProps {
   hasNextPage: boolean | undefined;
   fetchNextPage: (
     options?: FetchNextPageOptions | undefined
-  ) => Promise<InfiniteQueryObserverResult<Messages, Promise<Message>>>;
+  ) => Promise<InfiniteQueryObserverResult<Messages, Error>>;
   messages: Message[];
-  user: User | null;
   socket: Socket;
 }
 const MessageContent: React.FC<MessageContentProps> = ({
@@ -45,26 +37,27 @@ const MessageContent: React.FC<MessageContentProps> = ({
   hasNextPage,
   fetchNextPage,
   messages,
-  user,
   socket,
 }) => {
   const dispatch = useAppDispatch();
-
   const [params, setSearchParams] = useSearchParams();
   const theme = useAppSelector((state) => state.theme.theme);
   const { currentRoom } = useQuerySelector();
-
-  const files = messages
-    .filter((e) => e.type !== "Revocation")
-    .map((e) => e.files)
-    .reverse();
-  let file: string[] = [];
-  for (let i = 0; i < files.length; i++) {
-    for (let j = 0; j < files[i].length; j++) {
-      file.push(files[i][j]);
+  const user = useAppSelector((state) => state.auth.user);
+  const file = useMemo(() => {
+    const files = messages
+      .filter((e) => e.type !== "Revocation")
+      .map((e) => e.files)
+      .reverse();
+    let file: string[] = [];
+    for (let i = 0; i < files.length; i++) {
+      for (let j = 0; j < files[i].length; j++) {
+        file.push(files[i][j]);
+      }
     }
-  }
-  file.reverse();
+    file.reverse();
+    return file;
+  }, [messages]);
   const renderDate = (message: Message[], index: number) => {
     if (index === message.length - 1) {
       return;
@@ -266,7 +259,6 @@ const MessageContent: React.FC<MessageContentProps> = ({
                 <Fragment key={message._id}>
                   <div
                     id={message._id}
-                    // ref={setRefs}
                     className={cx({
                       "message-row": true,
                       notification: message.type === "Notification",
@@ -310,14 +302,13 @@ const MessageContent: React.FC<MessageContentProps> = ({
                         {renderCommentContent(message)}
 
                         <div className={cx("showSeeMore")}>
-                          <MoreFunction
+                          <SeeMore
                             className={
                               user?._id !== message.actedByUser?._id
                                 ? "others"
                                 : "self"
                             }
                             socket={socket}
-                            user={user}
                             index={index}
                             message={message}
                           />

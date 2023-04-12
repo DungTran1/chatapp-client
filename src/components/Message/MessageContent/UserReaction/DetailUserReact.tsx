@@ -5,7 +5,7 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Reaction, User } from "../../../../shared/type";
 import { getReactionEmoji } from "../../../../shared/utils";
 import { useAppDispatch, useAppSelector } from "../../../../store/hook";
-import Overlay from "../../../Overlay/Overlay";
+import Overlay from "../../../Common/Overlay/Overlay";
 import styles from "./UserReaction.module.scss";
 import React from "react";
 const cx = classnames.bind(styles);

@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { Navigate, useNavigate, useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import classnames from "classnames/bind";
 import styles from "./SignIn.module.scss";
-import { useAppSelector } from "../../store/hook";
-import { useQuerySelector } from "../../service/Query/querySelector";
+import { useCurrentRoomQuery } from "../../service/Query/UseQuery";
 
 const cx = classnames.bind(styles);
 
@@ -19,17 +18,24 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({
   message,
   setError,
 }) => {
+  const { data: currentRoom } = useCurrentRoomQuery();
+  const [params] = useSearchParams();
   const [timeLeft, setTimeLeft] = useState(
     type === "success" ? TIMEOUT_AUTO_CLOSE_SUCCESS : TIMEOUT_AUTO_CLOSE_ERROR
   );
   const navigate = useNavigate();
-
   const isCloseModalAutomatically = timeLeft === 0;
 
   useEffect(() => {
     if (isCloseModalAutomatically) {
       if (type === "success") {
-        navigate("/chat");
+        navigate(
+          params.get("p")
+            ? `${params.get("p")}`
+            : currentRoom
+            ? `/chat/${currentRoom._id}`
+            : "/chat"
+        );
       } else {
         setError("");
       }
@@ -62,7 +68,13 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({
             }}
             onClick={() => {
               if (type === "success") {
-                navigate("/chat");
+                navigate(
+                  params.get("p")
+                    ? `${params.get("p")}`
+                    : currentRoom
+                    ? `/chat/${currentRoom._id}`
+                    : "/chat"
+                );
               } else {
                 setError("");
               }

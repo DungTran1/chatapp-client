@@ -1,17 +1,26 @@
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hook";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 interface ProtectedProps {
   children: React.ReactNode;
 }
 
 const AuthProtect: React.FC<ProtectedProps> = ({ children }) => {
+  const ref = useRef(0) as any;
+  const { pathname } = useLocation();
   const navigate = useNavigate();
   const currentUser = useAppSelector((state) => state.auth.user);
   useEffect(() => {
-    if (!currentUser) navigate("/");
+    ref.current = setTimeout(() => {
+      navigate(`/?p=${pathname}`);
+    }, 5000);
+    return () => clearTimeout(ref.current);
   }, []);
+  useEffect(() => {
+    if (currentUser) clearTimeout(ref.current);
+  }, [currentUser]);
+
   return <>{children}</>;
 };
 

@@ -1,12 +1,12 @@
 import { useQuery } from "@tanstack/react-query";
 import classnames from "classnames/bind";
-import { getMedia } from "../../service/room";
+import { getMedia } from "../../service/api";
 import { Media } from "../../shared/type";
 import { IoMdCloseCircle } from "react-icons/io";
 
 import ListMedia from "./ListMedia";
 import styles from "./Media.module.scss";
-import { useAppDispatch, useAppSelector } from "../../store/hook";
+import { useAppDispatch } from "../../store/hook";
 import { setFormPopUp } from "../../reducer/ChatReducer";
 import { useQuerySelector } from "../../service/Query/querySelector";
 const cx = classnames.bind(styles);

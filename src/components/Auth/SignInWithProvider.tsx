@@ -4,11 +4,12 @@ import { convertErrorCodeToMessage } from "../../shared/utils";
 import { useForm } from "react-hook-form";
 import { signInWithEmailAndPassword } from "firebase/auth";
 import ModalNotification from "./ModalNotification";
-import Loading from "../Loading/Loading";
+import Loading from "../Common/Loading/Loading";
 
 import styles from "./SignIn.module.scss";
 import classnames from "classnames/bind";
 import { useAppSelector } from "../../store/hook";
+import Title from "../Common/Title";
 const cx = classnames.bind(styles);
 interface IFormInput {
   username: string;
@@ -43,6 +44,7 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
   };
   return (
     <>
+      <Title value={"Sign In"} />
       {curUser && !isLoading && (
         <ModalNotification type="success" message="Sign in successfully" />
       )}

@@ -10,7 +10,6 @@ import { changeTheme } from "../reducer/ThemeReducer";
 import styles from "./MainLayout.module.scss";
 import classnames from "classnames/bind";
 import { useRef } from "react";
-import { useQuerySelector } from "../service/Query/querySelector";
 import { useMediaQuery } from "react-responsive";
 
 const cx = classnames.bind(styles);
@@ -20,7 +19,6 @@ interface HeaderMainLayoutProps {
 }
 const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
   const theme = useAppSelector((state) => state.theme.theme);
-  const { currentRoom } = useQuerySelector();
   const { roomId } = useParams();
   const isMobile = useMediaQuery({ maxWidth: "40em" });
   const dispatch = useAppDispatch();
@@ -41,7 +39,7 @@ const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
   return (
     <>
       {(!isMobile || (isMobile && !roomId)) && (
-        <nav className="">
+        <nav className={cx("navbar")}>
           <ul>
             <li
               onClick={handleChangeTheme}

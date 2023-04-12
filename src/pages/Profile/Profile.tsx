@@ -1,11 +1,9 @@
 import { useEffect, useRef, useState } from "react";
 import { useMediaQuery } from "react-responsive";
-import { useNavigate } from "react-router-dom";
 import {
   EmailAuthProvider,
   reauthenticateWithCredential,
   updatePassword,
-  deleteUser,
   updateProfile,
 } from "firebase/auth";
 
@@ -13,28 +11,26 @@ import { auth } from "../../shared/firebase";
 import { convertErrorCodeToMessage, toastMessage } from "../../shared/utils";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 
-import { updateDisplayName, signOutCur } from "../../reducer/AuthReducer";
+import { updateDisplayName } from "../../reducer/AuthReducer";
 
 import ProfileImage from "../../components/Profile/UploadImage";
 import Name from "../../components/Profile/Name";
 import EmailVerification from "../../components/Profile/EmailVerification";
 import Password from "../../components/Profile/Password";
-import Delete from "../../components/Profile/Delete";
 import Email from "../../components/Profile/Email";
 import ConfirmPassword from "../../components/Profile/ConfirmPassword";
 import { post } from "../../service/axiosConfig";
 
 import classnames from "classnames/bind";
 import styles from "./Profile.module.scss";
+import Title from "../../components/Common/Title";
 const cx = classnames.bind(styles);
 
 const Profile = () => {
-  const navigate = useNavigate();
   const isTabletMobile = useMediaQuery({ query: "(max-width:64em)" });
   const firebaseUser = auth.currentUser;
   const user = useAppSelector((state) => state.auth.user);
   const [isUpdatedPassword, setIsUpdatedPassword] = useState(false);
-  const [isDeleted, setIsDeleted] = useState(false);
   const [isShowPromptReAuthFor, setIsShowPromptReAuthFor] = useState<
     string | undefined
   >();
@@ -73,8 +69,6 @@ const Profile = () => {
       .then(() => {
         if (type === "password") {
           changePassword();
-        } else if (type === "delete") {
-          deleteAccount();
         } else if (type === "name") {
           changeName();
         }
@@ -131,21 +125,10 @@ const Profile = () => {
         setIsUpdatedPassword(false);
       });
   };
-  const deleteAccount = () => {
-    // @ts-ignore
-    deleteUser(firebaseUser)
-      .then(() => {
-        toastMessage("success", "Delete successfully");
-        dispatch(signOutCur());
-        navigate("/");
-      })
-      .catch((error: any) => {
-        toastMessage("error", convertErrorCodeToMessage(error.code));
-      });
-  };
 
   return (
     <div className={cx("profile")}>
+      <Title value={"Profile"} />
       <h1>ACCOUNT SETTINGS</h1>
       <div className={`${cx("information")} row`}>
         <div className={`${cx("user__info")} l-8 md-12 sm-12`}>
@@ -167,12 +150,6 @@ const Profile = () => {
             setIsRetypedPassword={setIsRetypedPassword}
             setIsShowPromptReAuthFor={setIsShowPromptReAuthFor}
             newPasswordValueRef={newPasswordValueRef}
-          />
-          <Delete
-            isDeleted={isDeleted}
-            setIsDeleted={setIsDeleted}
-            setIsRetypedPassword={setIsRetypedPassword}
-            setIsShowPromptReAuthFor={setIsShowPromptReAuthFor}
           />
         </div>
         {!isTabletMobile && (

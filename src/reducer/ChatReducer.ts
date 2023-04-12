@@ -32,7 +32,7 @@ interface Chat {
 }
 const initialState: Chat = {
   chatNotificationSound: new Audio(
-    require("../assets/sound/mixkit-water-bubble-1317.wav")
+    require("../assets/sound/sounds_message.wav")
   ),
   isNotificationSound: false,
   isNewMessage: false,
