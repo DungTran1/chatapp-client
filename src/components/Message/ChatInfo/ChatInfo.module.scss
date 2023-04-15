@@ -231,6 +231,7 @@ ul.list-member {
       background-color: #404040;
     }
   }
+
   .show-option:hover,
   .option:hover {
     background-color: #404040;
@@ -241,6 +242,9 @@ ul.list-member {
   .member-option {
     background-color: #404040;
     box-shadow: 0 0 15px 1px #444444;
+  }
+  .member-option > div:hover {
+    background-color: #484848;
   }
   ul.list-member .add-member-icon {
     background-color: #484848;

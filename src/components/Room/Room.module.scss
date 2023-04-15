@@ -1,3 +1,4 @@
+@use "../../scss" as *;
 .room-joined {
   font-size: 1.6rem;
   width: 310px;
@@ -128,12 +129,12 @@ img {
     color: #767676;
   }
 }
-@media (max-width: 64rem) {
+@include breakpoints(smallDesktop) {
   .create-room {
     width: 80%;
   }
 }
-@media (max-width: 40rem) {
+@include breakpoints(tablet) {
   .room-joined {
     flex: 1;
   }

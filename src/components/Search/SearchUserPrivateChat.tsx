@@ -34,11 +34,10 @@ const SearchRoom: React.FC<SearchBoxProps> = ({ socket }) => {
     setSearch("");
     // setSearchResult([]);
   };
-  const handleCreateRoom = (privateChatInviting: User) => {
+  const handleCreateRoom = (UserChatWith: User) => {
     socket.emit("create_room_with_private", {
-      currentUser: user,
-      privateChatInviting,
-      photoRoomURL: require("../../assets/image/user.png"),
+      UserStartChat: user,
+      UserChatWith,
     });
     setSearch("");
   };
@@ -72,7 +71,7 @@ const SearchRoom: React.FC<SearchBoxProps> = ({ socket }) => {
                             effect="blur"
                             src={
                               item.photoURL ||
-                              require("../../assets/image/user-account.png")
+                              require("../../assets/image/user.png")
                             }
                             alt=""
                           />

@@ -55,10 +55,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
       socket.emit("typing", { status: false, user, roomId: roomId });
     }
   }, [inputValue]);
-  const handleSendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    e.stopPropagation();
-
+  const handleSendMessage = async () => {
     const sendMessage = sendMessageRef.current.value;
     if (!inputValue.trim() && files.length <= 0) {
       return;
@@ -141,7 +138,10 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
       <form
         onSubmit={async (e) => {
           e.preventDefault();
-          await handleSendMessage(e);
+          e.stopPropagation();
+        }}
+        onKeyDown={async (e) => {
+          if (e.key === "Enter") await handleSendMessage();
         }}
       >
         {files.length > 0 && (
@@ -149,14 +149,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
             {files.map((file: any) => (
               <div className={cx("img-preview")} key={file.preview}>
                 {file.type.includes("image") && (
-                  <img
-                    src={file.preview}
-                    // Revoke data uri after image is loaded
-                    // onLoad={() => {
-                    //   URL.revokeObjectURL(file.preview);
-                    // }}
-                    alt=""
-                  />
+                  <img src={file.preview} alt="" />
                 )}
                 {file.type.includes("video/mp4") && (
                   <video src={file.preview} width="80" height="80"></video>
@@ -183,7 +176,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
           value={inputValue}
           onChange={handleOnchangeInput}
         />
-        <button className={cx("submit-btn")}>
+        <button className={cx("submit-btn")} onClick={handleSendMessage}>
           <FaPaperPlane size="25" color={"#fb5a5a"} />
         </button>
       </form>

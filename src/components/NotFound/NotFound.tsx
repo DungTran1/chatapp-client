@@ -8,7 +8,7 @@ import Spaceship from "../../assets/image/spaceship.svg";
 const cx = classnames.bind(styles);
 const NotFound = () => {
   return (
-    <>
+    <div className={cx("wrapper")}>
       <div className={cx("mars")}></div>
       <img src={FourZeroFour} className={cx("logo-404")} alt="" />
       <img src={Meteor} className={cx("meteor")} alt="" />
@@ -24,7 +24,7 @@ const NotFound = () => {
       </div>
       <img src={Astronaut} className={cx("astronaut")} alt="" />
       <img src={Spaceship} className={cx("spaceship")} alt="" />
-    </>
+    </div>
   );
 };
 

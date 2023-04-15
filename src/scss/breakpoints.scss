@@ -1,0 +1,17 @@
+@mixin breakpoints($point) {
+  @if $point==smallDesktop {
+    @media (max-width: 64em) {
+      @content;
+    }
+  }
+  @if $point==tablet {
+    @media (max-width: 46.25em) {
+      @content;
+    }
+  }
+  @if $point==mobile {
+    @media (max-width: 26.25em) {
+      @content;
+    }
+  }
+}

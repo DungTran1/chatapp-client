@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import classnames from "classnames/bind";
 import styles from "./SignIn.module.scss";
-import { useCurrentRoomQuery } from "../../service/Query/UseQuery";
+import { useQuerySelector } from "../../service/Query/querySelector";
 
 const cx = classnames.bind(styles);
 
@@ -18,7 +18,7 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({
   message,
   setError,
 }) => {
-  const { data: currentRoom } = useCurrentRoomQuery();
+  const { currentRoom } = useQuerySelector();
   const [params] = useSearchParams();
   const [timeLeft, setTimeLeft] = useState(
     type === "success" ? TIMEOUT_AUTO_CLOSE_SUCCESS : TIMEOUT_AUTO_CLOSE_ERROR

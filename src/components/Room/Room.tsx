@@ -6,8 +6,10 @@ import { LazyLoadImage } from "react-lazy-load-image-component";
 import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import {
+  addSocketEventListener,
   defaultPhoto,
   displayLastTimeUserChat,
+  removeSocketEventListener,
   toastMessage,
 } from "../../shared/utils";
 import { Socket } from "socket.io-client";
@@ -33,33 +35,41 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
   const { UpdateCurrentRoom, CreateRoom, UpdateLastMessage } = useActionQuery();
   const user = useAppSelector((state) => state.auth.user);
   useEffect(() => {
-    const listEvent = ["receive_created_room", "receive_last_message"];
-    socket.on(
-      listEvent[0],
-      (data: { status: boolean; room: Room; message: string }) => {
-        if (data.status && user) {
-          CreateRoom(user, data.room);
-          dispatch(setFormPopUp(null));
-        } else toastMessage("error", data.message);
-      }
-    );
-    socket.on(
-      "receive_last_message",
-      async (data: { lastMessage: Message }) => {
-        if (!user) return;
-        UpdateLastMessage(user, data.lastMessage);
-      }
-    );
-    return () => {
-      for (const i in listEvent) {
-        socket.off(listEvent[i]);
-      }
+    const receiveCreateRoom = (data: {
+      status: boolean;
+      room: Room;
+      message: string;
+    }) => {
+      if (data.status && user) {
+        CreateRoom(user, data.room);
+        dispatch(setFormPopUp(null));
+      } else toastMessage("error", data.message);
     };
-  }, [socket, user]);
-  const displayNicknameOrDefaultName = (mess: Message) => {
+    const receiveLastMessage = async (data: { lastMessage: Message }) => {
+      if (!user) return;
+      UpdateLastMessage(user, data.lastMessage);
+    };
+    const listEvent = [
+      ["receive_created_room", receiveCreateRoom],
+      ["receive_last_message", receiveLastMessage],
+    ];
+    addSocketEventListener(listEvent, socket);
+    return () => {
+      removeSocketEventListener(listEvent, socket);
+    };
+  }, [user]);
+
+  const handleTakeMessage = (room: Room) => {
+    socket.emit("subscribe_room", {
+      oldRoom: currentRoom?._id,
+      newRoom: room._id,
+    });
+    UpdateCurrentRoom(room);
+  };
+  const displayNicknameOrDefaultName = (mess: Message, room: Room) => {
     return (
-      currentRoom?.users.find((u) => u.user._id === mess.actedByUser?._id)
-        ?.nickname || mess.actedByUser?.displayName
+      room.users.find((u) => u.user._id === mess.actedByUser?._id)?.nickname ||
+      mess.actedByUser?.displayName
     );
   };
   const displayPrivateOrGroupChat = (room: Room) => {
@@ -72,17 +82,6 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
       return display?.nickname || display?.user.displayName;
     }
   };
-
-  const handleTakeMessage = (room: Room) => {
-    localStorage.setItem("currentRoom", room._id);
-    socket.emit("connect_to_room", {
-      oldRoom: currentRoom?._id,
-      newRoom: room._id,
-      userId: user?._id,
-    });
-    UpdateCurrentRoom(room);
-  };
-
   const renderLastMessage = (room: Room) => {
     const lastMessage = room.lastMessage;
     if (!lastMessage) {
@@ -111,7 +110,7 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
         if (lastMessage.files.length > 0) {
           return (
             <>
-              <p>{`${displayNicknameOrDefaultName(lastMessage)}: ${
+              <p>{`${displayNicknameOrDefaultName(lastMessage, room)}: ${
                 lastMessage.text
               }`}</p>
               <img
@@ -127,7 +126,7 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
           );
         }
         return (
-          <p>{`${displayNicknameOrDefaultName(lastMessage)}: ${
+          <p>{`${displayNicknameOrDefaultName(lastMessage, room)}: ${
             lastMessage.text
           }`}</p>
         );
@@ -210,10 +209,10 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
                       height={50}
                       effect="blur"
                       src={
-                        room.photoURL ||
-                        defaultPhoto(
-                          room.type === "Private" ? "user.png" : "group.png"
-                        )
+                        room.type === "Group"
+                          ? room.photoURL || defaultPhoto("group.png")
+                          : room.users.find((u) => u.user._id !== user?._id)
+                              ?.user.photoURL || defaultPhoto("user.png")
                       }
                       alt=""
                     />

@@ -14,7 +14,11 @@ import { Socket } from "socket.io-client";
 import { MdNavigateBefore } from "react-icons/md";
 import { IoIosOptions } from "react-icons/io";
 
-import { defaultPhoto } from "../../shared/utils";
+import {
+  addSocketEventListener,
+  defaultPhoto,
+  removeSocketEventListener,
+} from "../../shared/utils";
 
 import classnames from "classnames/bind";
 import styles from "./Message.module.scss";
@@ -23,6 +27,7 @@ import { useInfiniteMessageQuery } from "../../service/Query/UseQuery";
 import { Link, useParams } from "react-router-dom";
 import { Message } from "../../shared/type";
 import { useActionQuery } from "../../service/Query/ActionQuery";
+import Loading from "../Common/Loading/Loading";
 
 const cx = classnames.bind(styles);
 interface MessageProps {
@@ -43,17 +48,14 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
     skip.current = 0;
   }, [roomId]);
 
-  const { data, hasNextPage, fetchNextPage } = useInfiniteMessageQuery(
-    roomId,
-    skip.current
-  );
+  const { data, hasNextPage, fetchNextPage, isLoading } =
+    useInfiniteMessageQuery(roomId, skip.current);
   const messages: Message[] = [];
   data?.pages.forEach((e) => {
     e?.messages.forEach((p) => {
       messages.push(p);
     });
   });
-
   useEffect(() => {
     const receiveSendMessage = (data: { message: Message }) => {
       skip.current = skip.current + 1;
@@ -67,15 +69,13 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
       if (!roomId) return;
       RevokeMessage(roomId, data.messageId);
     };
-    socket.on("receive_send_message", receiveSendMessage);
-    socket.on("receive_revoke_message", receiveRevokeMessage);
-    const listEvent = {
-      receive_send_message: receiveSendMessage,
-      receive_type_message: receiveRevokeMessage,
-    };
+    const listEvent = [
+      ["receive_send_message", receiveSendMessage],
+      ["receive_type_message", receiveRevokeMessage],
+    ];
+    addSocketEventListener(listEvent, socket);
     return () => {
-      for (let i in listEvent)
-        socket.off(i, listEvent[i as keyof typeof listEvent]);
+      removeSocketEventListener(listEvent, socket);
     };
   }, []);
 
@@ -96,6 +96,7 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
   return (
     <>
       {currentRoom?.users.find((u) => u.user._id === user?._id) &&
+        !isLoading &&
         messages.length > 0 && (
           <div
             className={`${cx("message-wrapper", {
@@ -104,6 +105,7 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
           
         `}
           >
+            {isLoading && <Loading />}
             {(!isMobileOrTablet || (isMobileOrTablet && !isToggleOption)) && (
               <div
                 className={cx({
@@ -125,12 +127,11 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
                     )}
                     <img
                       src={
-                        currentRoom?.photoURL ||
-                        defaultPhoto(
-                          currentRoom.type === "Private"
-                            ? "user.png"
-                            : "group.png"
-                        )
+                        currentRoom.type === "Group"
+                          ? currentRoom.photoURL || defaultPhoto("group.png")
+                          : currentRoom.users.find(
+                              (u) => u.user._id !== user?._id
+                            )?.user.photoURL || defaultPhoto("user.png")
                       }
                       alt=""
                     />

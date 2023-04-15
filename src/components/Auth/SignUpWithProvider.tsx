@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { auth } from "../../shared/firebase";
-import { convertErrorCodeToMessage, getRandomAvatar } from "../../shared/utils";
+import { convertErrorCodeToMessage } from "../../shared/utils";
 import { useForm } from "react-hook-form";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import ModalNotification from "./ModalNotification";
@@ -11,6 +11,7 @@ import { post } from "../../service/axiosConfig";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { getSignIn } from "../../reducer/AuthReducer";
 import Title from "../Common/Title";
+import { useActionQuery } from "../../service/Query/ActionQuery";
 const cx = classnames.bind(styles);
 interface IFormInput {
   username: string;
@@ -24,6 +25,7 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
   setChangeForm,
 }) => {
   const dispatch = useAppDispatch();
+  const { resetRoom } = useActionQuery();
   const curUser = useAppSelector((state) => state.auth.user);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -48,25 +50,17 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
         console.log(convertErrorCodeToMessage(error));
       });
     if (user) {
-      const photoRandom = getRandomAvatar();
-      updateProfile(user, {
-        photoURL: photoRandom,
+      console.log(user);
+      const userInfo = {
+        _id: user.uid,
+        photoURL: "",
         displayName: data.username,
-      })
-        .then(async () => {
-          await post("auth/signup", {
-            uid: user.uid,
-            photoURL: photoRandom,
-            displayName: data.username,
-            email: data.email,
-          });
-          dispatch(
-            getSignIn({
-              ...user,
-              photoURL: photoRandom,
-              displayName: data.username,
-            })
-          );
+        email: data.email,
+      };
+      await post("auth/signup", userInfo)
+        .then((res) => {
+          resetRoom(user.uid);
+          return dispatch(getSignIn(userInfo));
         })
         .catch((error) => {
           setError(convertErrorCodeToMessage(error));
@@ -100,7 +94,7 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
 
         {errors?.username?.type === "minLength" ||
           (errors.username?.type === "maxLength" && (
-            <p>no more than 20 characters or less than 6 characters</p>
+            <p>Phải dài hơn 6 ký tự và ngắn hơn 20 ký tự</p>
           ))}
         <div className={cx("email")}>
           <input
@@ -121,11 +115,9 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
             })}
           />
         </div>
-        {errors?.password?.type === "minLength" && (
-          <p>Must be more than 6 characters</p>
-        )}
+        {errors?.password?.type === "minLength" && <p>Phải dài hơn 6 ký tự</p>}
         <div className={cx("navigate")}>
-          <p>Do you already have an account?</p>
+          <p>Bạn đã có tài khoản?</p>
           <nav onClick={() => setChangeForm("signin")}>Sign In</nav>
         </div>
         <div className={cx("submit")}>

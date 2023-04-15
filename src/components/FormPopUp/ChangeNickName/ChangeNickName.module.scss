@@ -1,3 +1,4 @@
+@use "../../../scss/" as *;
 .wrapper {
   font-size: 1.6rem;
   position: fixed;
@@ -86,4 +87,9 @@
 .dark .change-input {
   background-color: #353535;
   color: #fff;
+}
+@include breakpoints(mobile) {
+  .wrapper {
+    width: 400px;
+  }
 }

@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import classnames from "classnames/bind";
-import styles from "./Media.module.scss";
+import styles from "./MediaFile.module.scss";
 import { Media } from "../../shared/type";
 import { useSearchParams } from "react-router-dom";
 const cx = classnames.bind(styles);
@@ -32,7 +32,7 @@ const ListMedia: React.FC<ListMediaProps> = ({ media }) => {
           ref={swiperRef}
           grabCursor
           initialSlide={mediaIndex}
-          spaceBetween={50}
+          spaceBetween={0}
           slidesPerView={1}
           onSlideChange={(swiper) => {
             setMediaIndex(swiper.activeIndex);
@@ -42,13 +42,13 @@ const ListMedia: React.FC<ListMediaProps> = ({ media }) => {
             return (
               <SwiperSlide key={index}>
                 {m.match(/.mp4/g) ? (
-                  <div className={cx("media")}>
+                  <div className={cx("file")}>
                     <video src={m} controls>
                       <source src={m} />
                     </video>
                   </div>
                 ) : (
-                  <div className={cx("media")}>
+                  <div className={cx("file")}>
                     <img src={m} alt="" />
                   </div>
                 )}

@@ -126,7 +126,6 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
       navigate("/chat");
       return;
     }
-    localStorage.removeItem("currentRoom");
     socket.emit("delete_chat_group_room", {
       roomId: currentRoom?._id,
     });
@@ -330,8 +329,8 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                           interactive
                           placement="top"
                           trigger="click"
-                          hideOnClick="toggle"
-                          onShow={(instance) => instance.hide()}
+                          hideOnClick
+                          onShown={(instance) => instance.hide()}
                           render={() => {
                             return (
                               <>

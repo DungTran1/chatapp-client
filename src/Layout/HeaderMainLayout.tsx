@@ -13,10 +13,7 @@ import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 
 const cx = classnames.bind(styles);
-interface HeaderMainLayoutProps {
-  // navBar: string;
-  // setNavBar: React.Dispatch<React.SetStateAction<string>>;
-}
+interface HeaderMainLayoutProps {}
 const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
   const theme = useAppSelector((state) => state.theme.theme);
   const { roomId } = useParams();

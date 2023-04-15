@@ -1,11 +1,10 @@
 import { useState } from "react";
-import { Navigate } from "react-router-dom";
-import { useAppSelector } from "../../store/hook";
 import SignInWithProvider from "../../components/Auth/SignInWithProvider";
 import SignUpWithProvider from "../../components/Auth/SignUpWithProvider";
 import styles from "./Login.module.scss";
 import classnames from "classnames/bind";
-
+import Astronaut from "../../assets/image/astronaut.svg";
+import Spaceship from "../../assets/image/spaceship.svg";
 const cx = classnames.bind(styles);
 const Home = () => {
   const [changeForm, setChangeForm] = useState("signin");
@@ -20,12 +19,9 @@ const Home = () => {
           <SignUpWithProvider setChangeForm={setChangeForm} />
         )}
       </div>
-      <video autoPlay muted loop id="myVideo" className={cx("background")}>
-        <source
-          src="https://giant.gfycat.com/FloweryPastelAsianpiedstarling.mp4"
-          type="video/mp4"
-        />
-      </video>
+      <div className={cx("mars")}></div>
+      <img src={Astronaut} className={cx("astronaut")} alt="" />
+      <img src={Spaceship} className={cx("spaceship")} alt="" />
     </div>
   );
 };

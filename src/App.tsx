@@ -1,5 +1,10 @@
 import { useEffect, useState } from "react";
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  useParams,
+} from "react-router-dom";
 import "firebase/compat/auth";
 import { auth } from "./shared/firebase";
 import { ToastContainer } from "react-toastify";
@@ -18,30 +23,27 @@ import Profile from "./pages/Profile/Profile";
 import { getUserOnline } from "./reducer/ChatReducer";
 import Chat from "./pages/Chat/Chat";
 import JoinLink from "./pages/JoinLink/JoinLink";
-import { useCurrentRoomQuery } from "./service/Query/UseQuery";
 import Message from "./components/Message/Message";
 import NotFound from "./components/NotFound/NotFound";
 import { signIn } from "./service/api";
 import OfflineNetwork from "./components/Common/Loading/OfflineNetwork";
+import { addSocketEventListener } from "./shared/utils";
 
 const socket = io(process.env.REACT_APP_API_URL as string);
 
 const App = () => {
-  useCurrentRoomQuery();
   const dispatch = useAppDispatch();
   const user = useAppSelector((state) => state.auth.user);
   const [isOnline, setIsOnline] = useState(true);
-  useEffect(() => {
-    socket.emit("connect_to_room", {
-      newRoom: localStorage.getItem("currentRoom") || "",
-    });
-  }, []);
+
   useEffect(() => {
     const handleOnline = () => {
+      socket.connect();
       setIsOnline(true);
     };
     const handleOffline = () => {
       setIsOnline(false);
+      socket.disconnect();
     };
     window.addEventListener("online", handleOnline);
     window.addEventListener("offline", handleOffline);
@@ -66,10 +68,19 @@ const App = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
-    socket.on("receive_user_online", (data: { userOnline: string[] }) => {
+    const connected = () => {
+      console.log("connected");
+    };
+    const receiveUserOnline = (data: { userOnline: string[] }) => {
       dispatch(getUserOnline(data.userOnline));
-    });
+    };
+    const listEvent = [
+      ["receive_user_online", receiveUserOnline],
+      ["connected", connected],
+    ];
+    addSocketEventListener(listEvent, socket);
     return () => {
+      socket.removeAllListeners();
       socket.disconnect();
     };
   }, []);
@@ -123,7 +134,6 @@ const App = () => {
               </AuthProtect>
             }
           />
-
           <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>

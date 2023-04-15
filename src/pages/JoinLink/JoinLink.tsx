@@ -18,7 +18,7 @@ const JoinLink: React.FC<JoinLinkProps> = ({ socket }) => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);
   const { roomId } = useParams();
-  const { data, isLoading } = useUserJoinLink(roomId || "");
+  const { data, isLoading } = useUserJoinLink(roomId, user?._id);
   const userExist = data?.userExist;
   const isAcceptLink = data?.isAcceptLink;
 
@@ -29,7 +29,7 @@ const JoinLink: React.FC<JoinLinkProps> = ({ socket }) => {
     });
     navigate(`/chat/${roomId}`);
   };
-  if (isLoading) return <Loading />;
+  if (isLoading || !user) return <Loading />;
   return (
     <div className={cx("wrapper")}>
       <Title value={"Join Room"} />

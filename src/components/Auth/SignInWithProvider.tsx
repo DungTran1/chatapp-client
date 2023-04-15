@@ -48,7 +48,7 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
       {curUser && !isLoading && (
         <ModalNotification type="success" message="Sign in successfully" />
       )}
-      {isLoading && <Loading />}
+      {isLoading && <Loading isTheme={false} />}
       {error && (
         <ModalNotification type="error" message={error} setError={setError} />
       )}
@@ -64,8 +64,6 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
             })}
           />
         </div>
-
-        {/* {errors?.email?.type === "pattern" || <p>Wrong Format</p>} */}
         <div className={cx("password")}>
           <input
             type="password"
@@ -76,11 +74,9 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
             })}
           />
         </div>
-        {errors?.password?.type === "minLength" && (
-          <p>Must be more than 6 characters</p>
-        )}
+        {errors?.password?.type === "minLength" && <p>Phải dài hơn 6 ký tự</p>}
         <div className={cx("navigate")}>
-          <span>Do you already have an account?</span>
+          <span>Bạn chưa có tài khoản?</span>
           <nav onClick={() => setChangeForm("signup")}>Sign Up</nav>
         </div>
         <div className={cx("submit")}>

@@ -48,14 +48,15 @@ export const useInfiniteMessageQuery = (
       cacheTime: Infinity,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
+      refetchOnReconnect: "always",
     }
   );
   return query;
 };
-export const useCurrentRoomQuery = () => {
+export const useCurrentRoomQuery = (roomId: string | undefined) => {
   const query = useQuery<Room, Error>(
     ["currentRoom"],
-    () => get("auth/getCurrentRoom/" + localStorage.getItem("currentRoom")),
+    () => get("auth/getCurrentRoom/" + roomId),
     {
       // refetchInterval: 2000,
     }
@@ -72,11 +73,13 @@ export const useReactionQuery = (roomId: string, messageId: string) => {
   );
   return query;
 };
-export const useUserJoinLink = (roomId: string) => {
-  const user = useAppSelector((state) => state.auth.user);
+export const useUserJoinLink = (
+  roomId: string | undefined,
+  userId: string | undefined
+) => {
   const query = useQuery(
-    ["userJoinLink", roomId],
-    () => CheckUserJoinLink(roomId, user?._id),
+    ["userJoinLink", roomId, userId],
+    () => CheckUserJoinLink(roomId, userId),
     {
       staleTime: Infinity,
       //  refetchInterval: 3000

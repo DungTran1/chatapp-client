@@ -1,8 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 
-import axios from "axios";
-
 import { updateProfile } from "firebase/auth";
 
 import { auth } from "../../shared/firebase";
@@ -16,6 +14,7 @@ import { updateAvatar } from "../../reducer/AuthReducer";
 import Loading from "../Common/Loading/Loading";
 import { post } from "../../service/axiosConfig";
 import { uploadImage } from "../../service/saveImage";
+import { defaultPhoto } from "../../shared/utils";
 
 const ProfileImage = () => {
   const [isLoading, setIsLoading] = useState(false);
@@ -60,7 +59,7 @@ const ProfileImage = () => {
       <h4>Profile photo</h4>
       <div>
         <div>
-          <img src={user?.photoURL} alt="" />
+          <img src={user?.photoURL || defaultPhoto("user.png")} alt="" />
         </div>
         <label htmlFor="upload-img">
           <HiOutlineUpload color="rgb(81 121 255)" />

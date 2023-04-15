@@ -1,14 +1,5 @@
-@import url("https://fonts.googleapis.com/css?family=Nunito:400,600,700");
+@use "../../scss/" as *;
 $nunito-font: "Nunito", sans-serif;
-
-// mixins
-@mixin breakpoint($point) {
-  @if $point==mobile {
-    @media (max-width: 480px) and (min-width: 320px) {
-      @content;
-    }
-  }
-}
 
 // keyrames
 @keyframes floating {
@@ -23,14 +14,10 @@ $nunito-font: "Nunito", sans-serif;
   }
 }
 
-html {
-  height: 100%;
-}
-
-body {
+.wrapper {
   background-image: url("../../assets/image/star.svg"),
     linear-gradient(to bottom, #05007a, #4d007d);
-  height: 100%;
+  height: 100vh;
   margin: 0;
   background-attachment: fixed;
   overflow: hidden;
@@ -54,10 +41,6 @@ body {
   right: 0;
   top: 16vmin;
   width: 30vmin;
-
-  @include breakpoint(mobile) {
-    top: 45vmin;
-  }
 }
 
 .meteor {
@@ -73,10 +56,6 @@ body {
   text-align: center;
   font-size: 5vmin;
   margin-top: 31vmin;
-
-  @include breakpoint(mobile) {
-    margin-top: 65vmin;
-  }
 }
 
 .subtitle {
@@ -105,10 +84,6 @@ body {
     background: white;
     color: #4d007d;
   }
-
-  @include breakpoint(mobile) {
-    font-size: 3.5vmin;
-  }
 }
 
 .astronaut {
@@ -117,19 +92,28 @@ body {
   left: 10vmin;
   height: 30vmin;
   animation: floating 3s infinite ease-in-out;
-
-  @include breakpoint(mobile) {
-    top: 2vmin;
-  }
 }
 
 .spaceship {
   position: absolute;
   bottom: 15vmin;
   right: 24vmin;
-
-  @include breakpoint(mobile) {
+}
+@include breakpoints(mobile) {
+  .spaceship {
     width: 45vmin;
     bottom: 18vmin;
+  }
+  .astronaut {
+    top: 2vmin;
+  }
+  .btn-back {
+    font-size: 3.5vmin;
+  }
+  .title {
+    margin-top: 65vmin;
+  }
+  .logo-404 {
+    top: 45vmin;
   }
 }

@@ -21,7 +21,7 @@ export const getRooms = async (userId: string | undefined) => {
   }
 };
 export const CheckUserJoinLink = async (
-  roomId: string,
+  roomId: string | undefined,
   userId: string | undefined
 ) => {
   try {

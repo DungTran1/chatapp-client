@@ -1,3 +1,4 @@
+@use "../../scss//index.scss" as *;
 .wrapper {
   position: relative;
   height: 100vh;
@@ -7,6 +8,10 @@
   text-align: center;
   color: #fff;
   font-size: 1.6rem;
+  background-image: url("../../assets/image/star.svg"),
+    linear-gradient(to bottom, #05007a, #4d007d);
+  background-attachment: fixed;
+  overflow: hidden;
 }
 .background {
   position: absolute;
@@ -58,10 +63,47 @@
     }
   }
 }
-@media (max-width: 768px) {
+.mars {
+  left: 0;
+  right: 0;
+  bottom: 0;
+  position: absolute;
+  height: 27vmin;
+  background: url("../../assets/image/mars.svg") no-repeat bottom center;
+  background-size: cover;
 }
-@media (max-width: 464px) {
+.astronaut {
+  position: absolute;
+  top: 2vmin;
+  left: 2vmin;
+  height: 30vmin;
+  animation: floating 3s infinite ease-in-out;
+}
+.spaceship {
+  position: absolute;
+  bottom: 15vmin;
+  right: 24vmin;
+}
+@keyframes floating {
+  from {
+    transform: translateY(0px);
+  }
+  65% {
+    transform: translateY(15px);
+  }
+  to {
+    transform: translateY(-0px);
+  }
+}
+@include breakpoints(mobile) {
   .container {
     width: 90%;
+  }
+  .astronaut {
+    top: 2vmin;
+  }
+  .spaceship {
+    width: 45vmin;
+    bottom: 18vmin;
   }
 }
