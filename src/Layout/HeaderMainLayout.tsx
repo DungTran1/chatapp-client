@@ -13,11 +13,11 @@ import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
 
 const cx = classnames.bind(styles);
-interface HeaderMainLayoutProps {}
+type HeaderMainLayoutProps = {};
 const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const { roomId } = useParams();
-  const isMobile = useMediaQuery({ maxWidth: "40em" });
+  const isTablet = useMediaQuery({ maxWidth: "46.25em" });
   const dispatch = useAppDispatch();
   const ref = useRef<HTMLLIElement>(null);
   const handleSignOut = () => {
@@ -27,7 +27,7 @@ const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
   };
   const handleChangeTheme = () => {
     localStorage.setItem(
-      "theme",
+      "darkTheme",
       ref.current?.id === "light" ? "dark" : "light"
     );
 
@@ -35,17 +35,17 @@ const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
   };
   return (
     <>
-      {(!isMobile || (isMobile && !roomId)) && (
+      {(!isTablet || (isTablet && !roomId)) && (
         <nav className={cx("navbar")}>
           <ul>
             <li
               onClick={handleChangeTheme}
               ref={ref}
-              id={theme ? "dark" : "light"}
-              value={theme ? "dark" : "light"}
+              id={darkTheme ? "dark" : "light"}
+              value={darkTheme ? "dark" : "light"}
             >
-              {!theme && <BsMoonStarsFill size={25} color="#4c4c4c" />}
-              {theme && <BsMoonStars size={25} color="#fff" />}
+              {!darkTheme && <BsMoonStarsFill size={25} color="#4c4c4c" />}
+              {darkTheme && <BsMoonStars size={25} color="#fff" />}
             </li>
             <li>
               <NavLink to="/profile">
@@ -73,7 +73,7 @@ const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
               <NavLink to="/" onClick={handleSignOut}>
                 <BiLogOutCircle
                   size={30}
-                  color={!theme ? "#4c4c4c" : "#a8a8ab"}
+                  color={!darkTheme ? "#4c4c4c" : "#a8a8ab"}
                 />
               </NavLink>
             </li>

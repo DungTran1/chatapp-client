@@ -18,23 +18,20 @@ export const useActionQuery = () => {
       ...data,
     }));
   };
-  const UpdateLastMessage = (user: User, lastMessage: Message) => {
-    return queryClient.setQueryData(
-      ["room", user?._id],
-      (oldData: Room[] | undefined) => {
-        return oldData?.map((e) =>
-          e._id === lastMessage.roomId
-            ? {
-                ...e,
-                lastMessage: {
-                  ...e.lastMessage,
-                  ...lastMessage,
-                },
-              }
-            : e
-        );
-      }
-    );
+  const UpdateLastMessage = (lastMessage: Message) => {
+    return queryClient.setQueryData(["room"], (oldData: Room[] | undefined) => {
+      return oldData?.map((e) =>
+        e._id === lastMessage.roomId
+          ? {
+              ...e,
+              lastMessage: {
+                ...e.lastMessage,
+                ...lastMessage,
+              },
+            }
+          : e
+      );
+    });
   };
   const AddMessage = (newMessage: Message) => {
     return queryClient.setQueryData(
@@ -82,7 +79,7 @@ export const useActionQuery = () => {
     );
   };
   const resetRoom = (userId: string) => {
-    queryClient.invalidateQueries(["room", userId]);
+    queryClient.invalidateQueries(["room"]);
     queryClient.invalidateQueries(["currentRoom"]);
   };
   const UpdateReaction = (messageId: string, user: User, name: string) => {

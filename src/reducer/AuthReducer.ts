@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { User } from "../shared/type";
 
-interface Auth {
+type Auth = {
   user: User | null;
-}
+};
 const initialState: Auth = {
   user: null,
 };

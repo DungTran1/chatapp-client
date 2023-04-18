@@ -16,18 +16,19 @@ import Tippy from "@tippyjs/react/headless";
 import classnames from "classnames/bind";
 import styles from "./MessageSubmit.module.scss";
 import { useQuerySelector } from "../../../../service/Query/querySelector";
+import { toastMessage } from "../../../../shared/utils";
 const cx = classnames.bind(styles);
 
-interface MessageSubmitProps {
+type MessageSubmitProps = {
   socket: Socket;
-}
+};
 const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
   const dispatch = useAppDispatch();
   const { roomId } = useParams();
   const user = useAppSelector((state) => state.auth.user);
   const { currentRoom } = useQuerySelector();
   const { replyMessage } = useAppSelector((state) => state.chat);
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const sendMessageRef = useRef() as any;
   const [inputValue, setInputValue] = useState("");
   const [files, setFiles] = useState<FileWithPath[]>([]);
@@ -38,6 +39,12 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
     },
 
     onDrop: (acceptedFiles) => {
+      const sizeTotal = acceptedFiles.reduce((total, file) => file.size, 0);
+      const maxSize = 10 * 1024 * 1024;
+      if (sizeTotal > maxSize) {
+        toastMessage("error", "File không được vượt quá 10MB");
+        return;
+      }
       setFiles(
         acceptedFiles.map((file) =>
           Object.assign(file, {
@@ -48,10 +55,10 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
     },
   });
   useEffect(() => {
-    if (inputValue) {
+    if (inputValue.trim()) {
       socket.emit("typing", { status: true, user, roomId: roomId });
     }
-    if (!inputValue) {
+    if (!inputValue.trim()) {
       socket.emit("typing", { status: false, user, roomId: roomId });
     }
   }, [inputValue]);
@@ -93,7 +100,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
     );
   };
   return (
-    <div className={cx("send-mess", { dark: theme })}>
+    <div className={cx("send-mess", { dark: darkTheme })}>
       <div className={cx("upload-file")}>
         <div {...getRootProps({ className: "dropzone" })}>
           <input {...getInputProps()} />
@@ -131,7 +138,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
             className={cx("close-reply-btn")}
             onClick={() => dispatch(setReplyMessage(null))}
           >
-            <IoMdClose size="20" color={theme ? "#fff" : ""} />
+            <IoMdClose size="20" color={darkTheme ? "#fff" : ""} />
           </button>
         </div>
       )}

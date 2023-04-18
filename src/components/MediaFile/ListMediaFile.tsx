@@ -1,19 +1,21 @@
-import { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import classnames from "classnames/bind";
 import styles from "./MediaFile.module.scss";
-import { Media } from "../../shared/type";
+
 import { useSearchParams } from "react-router-dom";
 const cx = classnames.bind(styles);
-interface ListMediaProps {
-  media: Media | undefined;
-}
+type ListMediaProps = {
+  files: string[];
+};
 
-const ListMedia: React.FC<ListMediaProps> = ({ media }) => {
-  const files = media?.files.slice().reverse();
+const ListMedia: React.FC<ListMediaProps> = ({ files }) => {
+  const [playing, setPlaying] = useState<number | null>(null);
+  const filesReverse = files.slice().reverse();
   const swiperRef = useRef() as any;
+  const videoRef = useRef<HTMLVideoElement[]>([]);
   const [params, setSearchParams] = useSearchParams();
   const [mediaIndex, setMediaIndex] = useState(
     Number(params.get("mediaIndex")) || 0
@@ -24,7 +26,6 @@ const ListMedia: React.FC<ListMediaProps> = ({ media }) => {
       setSearchParams(params);
     };
   }, []);
-
   return (
     <div className={cx("file-list-wrapper")}>
       <div className={cx("file-list")}>
@@ -35,15 +36,23 @@ const ListMedia: React.FC<ListMediaProps> = ({ media }) => {
           spaceBetween={0}
           slidesPerView={1}
           onSlideChange={(swiper) => {
+            if (playing) videoRef.current[playing].pause();
             setMediaIndex(swiper.activeIndex);
           }}
         >
-          {files?.map((m, index) => {
+          {filesReverse?.map((m, index) => {
             return (
               <SwiperSlide key={index}>
                 {m.match(/.mp4/g) ? (
                   <div className={cx("file")}>
-                    <video src={m} controls>
+                    <video
+                      onPlay={() => setPlaying(index)}
+                      ref={(el) => {
+                        if (el) videoRef.current[index] = el;
+                      }}
+                      src={m}
+                      controls
+                    >
                       <source src={m} />
                     </video>
                   </div>
@@ -75,7 +84,7 @@ const ListMedia: React.FC<ListMediaProps> = ({ media }) => {
             },
           }}
         >
-          {files?.map((m, index) => {
+          {filesReverse?.map((m, index) => {
             return (
               <SwiperSlide
                 key={index}
@@ -113,4 +122,4 @@ const ListMedia: React.FC<ListMediaProps> = ({ media }) => {
   );
 };
 
-export default ListMedia;
+export default React.memo(ListMedia);

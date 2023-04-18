@@ -15,6 +15,12 @@
   left: 10px;
   z-index: 99;
 }
+.empty-file {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 .file-list-wrapper {
   position: relative;
 }

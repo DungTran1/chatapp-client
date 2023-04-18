@@ -2,19 +2,19 @@ import { useAppSelector } from "../../../store/hook";
 import classnames from "classnames/bind";
 import styles from "./Overlay.module.scss";
 const cx = classnames.bind(styles);
-interface OverlayProps {
-  isTheme?: boolean;
+type OverlayProps = {
+  isNoTheme?: boolean;
   position: "absolute" | "fixed";
-}
-const Overlay: React.FC<OverlayProps> = ({ position, isTheme = true }) => {
-  const theme = useAppSelector((state) => state.theme.theme);
+};
+const Overlay: React.FC<OverlayProps> = ({ position, isNoTheme = false }) => {
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   return (
     <div
       style={{ position }}
       className={cx({
         overlay: true,
-        dark: theme,
-        isTheme: isTheme,
+        dark: darkTheme,
+        isNoTheme: isNoTheme,
       })}
     ></div>
   );

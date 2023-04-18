@@ -5,13 +5,13 @@ import styles from "./RoomSkeleton.module.scss";
 import { useAppSelector } from "../../../../store/hook";
 const cx = classnames.bind(styles);
 const RoomSkeleton = () => {
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
 
   return (
-    <div className={cx("wrapper", { dark: theme })}>
+    <div className={cx("wrapper", { dark: darkTheme })}>
       <SkeletonTheme
-        baseColor={theme ? "#404040" : ""}
-        highlightColor={theme ? "#464646" : ""}
+        baseColor={darkTheme ? "#404040" : ""}
+        highlightColor={darkTheme ? "#464646" : ""}
       >
         <div className={cx("title")}>
           <Skeleton width={50} height={30} borderRadius={5} />

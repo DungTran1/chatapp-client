@@ -45,10 +45,10 @@ import styles from "./ChatInfo.module.scss";
 import classnames from "classnames/bind";
 const cx = classnames.bind(styles);
 
-interface ChatInfoTabProps {
+type ChatInfoTabProps = {
   setIsToggleOption: React.Dispatch<React.SetStateAction<boolean>>;
   socket: Socket;
-}
+};
 const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
   setIsToggleOption,
   socket,
@@ -58,7 +58,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
   const { resetRoom } = useActionQuery();
   const [params, setSearchParams] = useSearchParams();
   const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const user = useAppSelector((state) => state.auth.user);
   const { userOnline } = useAppSelector((state) => state.chat);
   const { currentRoom } = useQuerySelector();
@@ -146,7 +146,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
     <>
       <div
         className={`${cx("message-info-wrapper", {
-          dark: theme,
+          dark: darkTheme,
         })}  `}
       >
         <div>
@@ -166,9 +166,9 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
               <LazyLoadImage
                 effect="blur"
                 src={
-                  currentRoom?.photoURL || currentRoom?.type === "Private"
-                    ? defaultPhoto("user.png")
-                    : defaultPhoto("group.png")
+                  currentRoom?.type === "Private"
+                    ? userDisplay?.user.photoURL || defaultPhoto("user.png")
+                    : currentRoom?.photoURL || defaultPhoto("group.png")
                 }
                 width="80"
                 height="80"
@@ -202,14 +202,14 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
               <h4>Tuy chinh doan chat</h4>
               <button>
                 {(!isOpenOption.includes("customize-chat") && (
-                  <BsChevronCompactDown color={theme ? "#fff" : ""} />
-                )) || <BsChevronCompactUp color={theme ? "#fff" : ""} />}
+                  <BsChevronCompactDown color={darkTheme ? "#fff" : ""} />
+                )) || <BsChevronCompactUp color={darkTheme ? "#fff" : ""} />}
               </button>
             </div>
             <div
               className={cx("option-section", {
                 isShow: isOpenOption.includes("customize-chat"),
-                dark: theme,
+                dark: darkTheme,
               })}
             >
               {currentRoom?.type === "Group" &&
@@ -221,7 +221,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                     <button>
                       <BsFillPencilFill
                         size="15"
-                        color={theme ? "#fff" : "#222222"}
+                        color={darkTheme ? "#fff" : "#222222"}
                       />
                     </button>
                     <h4>Doi ten doan chat</h4>
@@ -233,7 +233,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                     <button>
                       <BsImageFill
                         size="15"
-                        color={theme ? "#fff" : "#222222"}
+                        color={darkTheme ? "#fff" : "#222222"}
                       />
                     </button>
                     <h4>Thay doi anh</h4>
@@ -245,7 +245,10 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                 onClick={() => dispatch(setFormPopUp("ChangeNickName"))}
               >
                 <button>
-                  <FaSignature size="15" color={theme ? "#fff" : "#222222"} />
+                  <FaSignature
+                    size="15"
+                    color={darkTheme ? "#fff" : "#222222"}
+                  />
                 </button>
                 <h4>Sua biet danh</h4>
               </div>
@@ -260,8 +263,8 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
 
               <button>
                 {(!isOpenOption.includes("member-chat") && (
-                  <BsChevronCompactDown color={theme ? "#fff" : ""} />
-                )) || <BsChevronCompactUp color={theme ? "#fff" : ""} />}
+                  <BsChevronCompactDown color={darkTheme ? "#fff" : ""} />
+                )) || <BsChevronCompactUp color={darkTheme ? "#fff" : ""} />}
               </button>
             </div>
             <div
@@ -291,7 +294,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                     <div className={cx("add-member-icon")}>
                       <AiOutlinePlus
                         size={20}
-                        color={theme ? "#fff" : "#000"}
+                        color={darkTheme ? "#fff" : "#000"}
                       />
                     </div>
                     <p>
@@ -303,23 +306,33 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                 )}
                 <li className={cx("option")}>
                   <div>
-                    <img src={admin?.user.photoURL} alt="" />
-                    <h4>{admin?.nickname || admin?.user.displayName}</h4>
+                    <img
+                      src={admin?.user.photoURL || defaultPhoto("user.png")}
+                      alt=""
+                    />
+                    <div className={cx("displayName")}>
+                      <h4>{admin?.nickname || admin?.user.displayName}</h4>
+                      {admin?.nickname && <p>{admin?.user.displayName}</p>}
+                    </div>
                     {userOnline.some(
                       (userId) => userId === admin?.user._id
                     ) && <div className={cx("online")}></div>}
                   </div>
                 </li>
-                {currentRoom?.users.map((e) => {
-                  if (e.user._id === currentRoom.initiator) {
+                {currentRoom?.users.map((u) => {
+                  if (u.user._id === currentRoom.initiator) {
                     return "";
                   }
+                  const photoURL = u.user.photoURL || defaultPhoto("user.png");
                   return (
-                    <li key={e.user._id} className={cx("option")}>
+                    <li key={u.user._id} className={cx("option")}>
                       <div>
-                        <img src={e.user.photoURL} alt="" />
-                        <h4>{e.user.displayName}</h4>
-                        {userOnline.some((userId) => userId === e.user._id) && (
+                        <img src={photoURL} alt="" />
+                        <div className={cx("displayName")}>
+                          <h4>{u.nickname || u.user.displayName}</h4>
+                          {u.nickname && <p>{u.user.displayName}</p>}
+                        </div>
+                        {userOnline.some((userId) => userId === u.user._id) && (
                           <div className={cx("online")}></div>
                         )}
                       </div>
@@ -338,7 +351,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                                   <div
                                     className={cx("")}
                                     onClick={() =>
-                                      handleAppointmentAsAdministrator(e)
+                                      handleAppointmentAsAdministrator(u)
                                     }
                                   >
                                     <FaShieldAlt size="15" color="#2d6eff" />
@@ -356,7 +369,8 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                                     onClick={() =>
                                       handleRemoveUser(
                                         currentRoom.users.find(
-                                          (u) => u.user._id === e.user._id
+                                          (userRemoved) =>
+                                            userRemoved.user._id === u.user._id
                                         )
                                       )
                                     }
@@ -372,7 +386,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                           }}
                         >
                           <div>
-                            {e.user._id !== currentRoom?.initiator &&
+                            {u.user._id !== currentRoom?.initiator &&
                               currentRoom.initiator === user?._id && (
                                 <BsThreeDots size="15" color="" />
                               )}
@@ -393,8 +407,8 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
               <h4>Media file</h4>
               <button>
                 {(!isOpenOption.includes("file-chat") && (
-                  <BsChevronCompactDown color={theme ? "#fff" : ""} />
-                )) || <BsChevronCompactUp color={theme ? "#fff" : ""} />}
+                  <BsChevronCompactDown color={darkTheme ? "#fff" : ""} />
+                )) || <BsChevronCompactUp color={darkTheme ? "#fff" : ""} />}
               </button>
             </div>
 
@@ -410,7 +424,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                 <button>
                   <MdOutlinePermMedia
                     size="15"
-                    color={theme ? "#fff" : "#222222"}
+                    color={darkTheme ? "#fff" : "#222222"}
                   />
                 </button>
                 <h4>Media file</h4>
@@ -426,8 +440,8 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                 <h4>Riêng tư và hỗ trợ</h4>
                 <button>
                   {(!isOpenOption.includes("private-and-help-chat") && (
-                    <BsChevronCompactDown color={theme ? "#fff" : ""} />
-                  )) || <BsChevronCompactUp color={theme ? "#fff" : ""} />}
+                    <BsChevronCompactDown color={darkTheme ? "#fff" : ""} />
+                  )) || <BsChevronCompactUp color={darkTheme ? "#fff" : ""} />}
                 </button>
               </div>
 
@@ -475,7 +489,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                 >
                   <div className={cx("option")}>
                     <button>
-                      <BsLink45Deg color={theme ? "#fff" : "#222222"} />
+                      <BsLink45Deg color={darkTheme ? "#fff" : "#222222"} />
                     </button>
                     <h4>Tham gia lien ket</h4>
                   </div>
@@ -485,7 +499,7 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
                   onClick={handleDeleteChatOrLeaveRoom}
                 >
                   <button>
-                    <FaSignOutAlt color={theme ? "#fff" : "#222222"} />
+                    <FaSignOutAlt color={darkTheme ? "#fff" : "#222222"} />
                   </button>
                   <h4>
                     {(currentRoom?.initiator === user?._id &&

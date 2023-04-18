@@ -11,9 +11,9 @@ import Title from "../../components/Common/Title";
 
 const cx = classnames.bind(styles);
 
-interface JoinLinkProps {
+type JoinLinkProps = {
   socket: Socket;
-}
+};
 const JoinLink: React.FC<JoinLinkProps> = ({ socket }) => {
   const navigate = useNavigate();
   const user = useAppSelector((state) => state.auth.user);

@@ -11,14 +11,15 @@ import { UserInRoom } from "../../../shared/type";
 
 import classnames from "classnames/bind";
 import styles from "./ChangeNickName.module.scss";
+import { defaultPhoto } from "../../../shared/utils";
 const cx = classnames.bind(styles);
 
-interface ChangeNickNameProps {
+type ChangeNickNameProps = {
   socket: Socket;
-}
+};
 const ChangeNickName: React.FC<ChangeNickNameProps> = ({ socket }) => {
   const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const { currentRoom } = useQuerySelector();
   const { user } = useAppSelector((state) => state.auth);
   const [isChangeNickName, setIsChangeNickName] = useState<string>("");
@@ -39,7 +40,7 @@ const ChangeNickName: React.FC<ChangeNickNameProps> = ({ socket }) => {
   };
   return (
     <>
-      <div className={cx("wrapper", { dark: theme })}>
+      <div className={cx("wrapper", { dark: darkTheme })}>
         <div className={cx("title")}>
           <h4>Biệt danh</h4>
           <button
@@ -52,15 +53,18 @@ const ChangeNickName: React.FC<ChangeNickNameProps> = ({ socket }) => {
         <div className={cx("list-member-in-room")}>
           <ul>
             {currentRoom?.users.map((userInRoom, index) => {
+              const displayName =
+                userInRoom.nickname || userInRoom.user.displayName;
               return (
                 <li className={cx("member")} key={userInRoom.user._id}>
                   <>
-                    <img src={userInRoom.user.photoURL} alt="" />
+                    <img
+                      src={userInRoom.user.photoURL || defaultPhoto("user.png")}
+                      alt=""
+                    />
                     {(isChangeNickName !== userInRoom.user._id && (
                       <div>
-                        <h4>
-                          {userInRoom.nickname || userInRoom.user.displayName}
-                        </h4>
+                        <h4>{displayName}</h4>
                         <p className={cx("set-nickname")}>Đặt biệt danh</p>
                       </div>
                     )) || (
@@ -69,11 +73,7 @@ const ChangeNickName: React.FC<ChangeNickNameProps> = ({ socket }) => {
                           if (el) changeRef.current[userInRoom.user._id] = el;
                         }}
                         className={cx("change-input")}
-                        placeholder={
-                          userInRoom.nickname ||
-                          userInRoom.user.displayName ||
-                          ""
-                        }
+                        placeholder={displayName || ""}
                       />
                     )}
                   </>
@@ -85,7 +85,7 @@ const ChangeNickName: React.FC<ChangeNickNameProps> = ({ socket }) => {
                     }}
                   >
                     {(!isChangeNickName.includes(userInRoom.user._id) && (
-                      <FaPencilAlt size="20" color={theme ? "#fff" : ""} />
+                      <FaPencilAlt size="20" color={darkTheme ? "#fff" : ""} />
                     )) || <FcCheckmark />}
                   </button>
                 </li>

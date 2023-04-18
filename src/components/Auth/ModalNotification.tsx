@@ -6,11 +6,11 @@ import { useQuerySelector } from "../../service/Query/querySelector";
 
 const cx = classnames.bind(styles);
 
-interface ModalNotificationProps {
+type ModalNotificationProps = {
   type: string;
   message: string;
   setError?: any;
-}
+};
 const TIMEOUT_AUTO_CLOSE_ERROR = 5;
 const TIMEOUT_AUTO_CLOSE_SUCCESS = 2;
 const ModalNotification: React.FC<ModalNotificationProps> = ({
@@ -48,10 +48,9 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({
       setTimeLeft((prev) => prev - 1);
     }, 1000);
 
-    return () => clearInterval(timeout); // => so when "error" is set empty, the component unmount, this interval timer is clear
+    return () => clearInterval(timeout);
     // eslint-disable-next-line
   }, []);
-  // if (currentUser) return <Navigate to="/" replace />;
   return (
     <div className={cx("noti__login__status")}>
       <div className={cx("noti")}>

@@ -2,7 +2,7 @@ import Tippy from "@tippyjs/react/headless";
 import { Socket } from "socket.io-client";
 import { Message } from "../../../../shared/type";
 import classnames from "classnames/bind";
-import styles from "./SeeMore.module.scss";
+import styles from "./MessageControl.module.scss";
 import { BsEmojiSmile, BsThreeDotsVertical } from "react-icons/bs";
 import { FaReply } from "react-icons/fa";
 import { getReactionEmoji } from "../../../../shared/utils";
@@ -11,12 +11,12 @@ import { setReplyMessage } from "../../../../reducer/ChatReducer";
 import { useParams } from "react-router-dom";
 
 const cx = classnames.bind(styles);
-interface MoreFunctionProps {
+type MoreFunctionProps = {
   className: string;
   socket: Socket;
   index: number;
   message: Message;
-}
+};
 const MoreFunction: React.FC<MoreFunctionProps> = ({
   className,
   socket,
@@ -24,7 +24,7 @@ const MoreFunction: React.FC<MoreFunctionProps> = ({
   message,
 }) => {
   const dispatch = useAppDispatch();
-  const { theme } = useAppSelector((state) => state.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const user = useAppSelector((state) => state.auth.user);
   const { roomId } = useParams();
   const handleRevokeMessage = () => {
@@ -49,7 +49,7 @@ const MoreFunction: React.FC<MoreFunctionProps> = ({
       className={cx({
         [className]: cx(className),
         more: true,
-        dark: theme,
+        dark: darkTheme,
       })}
     >
       <div className={cx("see-more-list")}>

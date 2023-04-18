@@ -12,20 +12,21 @@ import { useQuerySelector } from "../../service/Query/querySelector";
 
 import classnames from "classnames/bind";
 import styles from "./Search.module.scss";
+import { defaultPhoto } from "../../shared/utils";
 
 const cx = classnames.bind(styles);
-interface SearchUserGroupChatProps {
+type SearchUserGroupChatProps = {
   type: "CreateGroupChat" | "AddUserToGroupChat";
   userAdded: User[];
   handleAddUserToListCreateRoom: (user: User) => void;
-}
+};
 const SearchUserGroupChat: React.FC<SearchUserGroupChatProps> = ({
   type,
   userAdded,
   handleAddUserToListCreateRoom,
 }) => {
   const { currentRoom } = useQuerySelector();
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const user = useAppSelector((state) => state.auth.user);
   const [search, setSearch] = useState("");
   const searchInputRef = useRef() as any;
@@ -46,7 +47,7 @@ const SearchUserGroupChat: React.FC<SearchUserGroupChatProps> = ({
   };
   return (
     <div
-      className={cx("search-user-create-room", { dark: theme })}
+      className={cx("search-user-create-room", { dark: darkTheme })}
       ref={searchInputRef}
     >
       <Tippy
@@ -61,7 +62,10 @@ const SearchUserGroupChat: React.FC<SearchUserGroupChatProps> = ({
             <>
               {search && searchResult.length > 0 && !isLoading && (
                 <div
-                  className={cx("search-result", { users: true, dark: theme })}
+                  className={cx("search-result", {
+                    users: true,
+                    dark: darkTheme,
+                  })}
                 >
                   <ul>
                     {searchResult?.map((item) => {
@@ -74,10 +78,7 @@ const SearchUserGroupChat: React.FC<SearchUserGroupChatProps> = ({
                             width={40}
                             height={40}
                             effect="blur"
-                            src={
-                              item.photoURL ||
-                              require("../../assets/image/user-account.png")
-                            }
+                            src={item.photoURL || defaultPhoto("user.png")}
                             alt=""
                           />
                           <p>{item.displayName}</p>

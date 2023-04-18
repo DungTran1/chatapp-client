@@ -3,7 +3,7 @@ import Overlay from "../Overlay/Overlay";
 import { useAppSelector } from "../../../store/hook";
 
 const OfflineNetwork = () => {
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   return (
     <>
       <Bars

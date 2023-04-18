@@ -5,24 +5,24 @@ import { BiSend } from "react-icons/bi";
 import classnames from "classnames/bind";
 import styles from "./ProfileComp.module.scss";
 const cx = classnames.bind(styles);
-interface NameProps {
+type NameProps = {
   setIsShowPromptReAuthFor: any;
   setIsRetypedPassword: any;
   displayNameValueRef: any;
-}
+};
 const Name: React.FC<NameProps> = ({
   setIsShowPromptReAuthFor,
   setIsRetypedPassword,
   displayNameValueRef,
 }) => {
   const user = useAppSelector((state) => state.auth.user);
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   return (
     <div className={cx("name")}>
       <h4>Name</h4>
       {
         <>
-          <form className={cx({ dark: theme })}>
+          <form className={cx({ dark: darkTheme })}>
             <input
               type="text"
               ref={displayNameValueRef}
@@ -51,7 +51,7 @@ const Name: React.FC<NameProps> = ({
               }}
               className=""
             >
-              <BiSend size={25} color={theme ? "#dddddd" : ""} />
+              <BiSend size={25} color={darkTheme ? "#dddddd" : ""} />
             </button>
           </form>
         </>

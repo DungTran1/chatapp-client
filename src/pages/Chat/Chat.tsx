@@ -26,22 +26,27 @@ import classnames from "classnames/bind";
 import { UsersTyping } from "../../shared/type";
 const cx = classnames.bind(styles);
 
-interface ChatProps {
+type ChatProps = {
   socket: Socket;
-}
+};
 const Chat: React.FC<ChatProps> = ({ socket }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const { roomId } = useParams();
   useCurrentRoomQuery(roomId);
-  const theme = useAppSelector((state) => state.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const user = useAppSelector((state) => state.auth.user);
   const { currentRoom } = useQuerySelector();
   const { resetRoom } = useActionQuery();
   const { data, isLoading } = useRoomQuery(user?._id);
-  const isMobile = useMediaQuery({ maxWidth: "40em" });
+  const isTablet = useMediaQuery({ maxWidth: "46.25em" });
   const ref = useRef<string | undefined>();
   ref.current = roomId;
+  const softRoom = data?.sort((a, b) => {
+    const dateA = new Date(a.lastMessage.createdAt).getTime();
+    const dateB = new Date(b.lastMessage.createdAt).getTime();
+    return dateB - dateA;
+  });
   useEffect(() => {
     const receiveResetRoom = (roomId?: string) => {
       resetRoom(user?._id as string);
@@ -52,19 +57,15 @@ const Chat: React.FC<ChatProps> = ({ socket }) => {
     const receiveTyping = (data: UsersTyping) => {
       dispatch(updateUsersTyping(data));
     };
-    socket.on("connect", () => {
+    const connect = () => {
       if (ref.current) {
         socket.emit("subscribe_room", {
           newRoom: ref.current,
         });
       }
-    });
-    socket.on("reconnect", () => {
-      socket.emit("subscribe_room", {
-        newRoom: roomId,
-      });
-    });
+    };
     const listEvent = [
+      ["connect", connect],
       ["receive_typing", receiveTyping],
       ["receive_reset_room", receiveResetRoom],
     ];
@@ -79,14 +80,14 @@ const Chat: React.FC<ChatProps> = ({ socket }) => {
     <>
       <Title value={"Chat"} />
       {!data && <RoomSkeleton />}
-      {data && (!isMobile || (isMobile && !roomId)) && (
-        <RoomJoined data={data} socket={socket} />
+      {data && (!isTablet || (isTablet && !roomId)) && (
+        <RoomJoined data={softRoom} socket={socket} />
       )}
       {currentRoom?.users.find((u) => u.user._id === user?._id) &&
-        (!isMobile || (isMobile && roomId)) && <Outlet />}
+        (!isTablet || (isTablet && roomId)) && <Outlet />}
 
-      {!roomId && !isMobile && (
-        <div className={cx("empty-background", { dark: theme })}>
+      {!roomId && !isTablet && (
+        <div className={cx("empty-background", { dark: darkTheme })}>
           <div>
             <img src={defaultPhoto("user-account.png")} alt="" />
           </div>

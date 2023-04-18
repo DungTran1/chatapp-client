@@ -2,11 +2,11 @@ import classnames from "classnames/bind";
 import styles from "./ProfileComp.module.scss";
 const cx = classnames.bind(styles);
 
-interface Props {
+type Props = {
   isShowPromptReAuthFor: string | undefined;
   oldPasswordValueRef: any;
   reAuthentication: any;
-}
+};
 const ComfirmPassword: React.FC<Props> = ({
   isShowPromptReAuthFor,
   oldPasswordValueRef,

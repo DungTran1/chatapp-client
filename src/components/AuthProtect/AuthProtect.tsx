@@ -2,9 +2,9 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useAppSelector } from "../../store/hook";
 import { useEffect, useRef } from "react";
 
-interface ProtectedProps {
+type ProtectedProps = {
   children: React.ReactNode;
-}
+};
 
 const AuthProtect: React.FC<ProtectedProps> = ({ children }) => {
   const ref = useRef(0) as any;
@@ -14,7 +14,7 @@ const AuthProtect: React.FC<ProtectedProps> = ({ children }) => {
   useEffect(() => {
     ref.current = setTimeout(() => {
       navigate(`/?p=${pathname}`);
-    }, 5000);
+    }, 4000);
     return () => clearTimeout(ref.current);
   }, []);
   useEffect(() => {

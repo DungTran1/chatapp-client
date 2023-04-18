@@ -13,14 +13,14 @@ import { getSignIn } from "../../reducer/AuthReducer";
 import Title from "../Common/Title";
 import { useActionQuery } from "../../service/Query/ActionQuery";
 const cx = classnames.bind(styles);
-interface IFormInput {
+type IFormInput = {
   username: string;
   password: string;
   email: string;
-}
-interface SignUpWithProviderProps {
+};
+type SignUpWithProviderProps = {
   setChangeForm: React.Dispatch<React.SetStateAction<string>>;
-}
+};
 const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
   setChangeForm,
 }) => {

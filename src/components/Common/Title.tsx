@@ -1,8 +1,8 @@
 import { useEffect } from "react";
 
-interface TitleProps {
+type TitleProps = {
   value: string;
-}
+};
 const Title: React.FC<TitleProps> = ({ value }) => {
   useEffect(() => {
     document.title = value;

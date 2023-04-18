@@ -9,23 +9,22 @@ import { setFormPopUp } from "../../../reducer/ChatReducer";
 import { useSearchParams } from "react-router-dom";
 import { useQuerySelector } from "../../../service/Query/querySelector";
 
-import styles from "./AddUserToRoomForm.module.scss";
+import styles from "./CreateRoomOrAddUser.module.scss";
 import classnames from "classnames/bind";
 
 const cx = classnames.bind(styles);
-interface AddUserToRoomFormProps {
+type CreateRoomOrAddUserProps = {
   type: "CreateGroupChat" | "AddUserToGroupChat";
   socket: Socket;
   usersInCurrentRoom?: UserInRoom[];
-}
-const AddUserToRoomForm: React.FC<AddUserToRoomFormProps> = ({
+};
+const CreateRoomOrAddUser: React.FC<CreateRoomOrAddUserProps> = ({
   type,
   socket,
-  usersInCurrentRoom,
 }) => {
   const [params] = useSearchParams();
   const user = useAppSelector((state) => state.auth.user);
-  const { theme } = useAppSelector((state) => state.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const { currentRoom } = useQuerySelector();
   const dispatch = useAppDispatch();
   const [userAdded, setUserAdded] = useState<Array<User>>(() => {
@@ -67,6 +66,7 @@ const AddUserToRoomForm: React.FC<AddUserToRoomFormProps> = ({
       });
       return;
     }
+
     socket.emit("create_room", {
       initiator: user,
       usersAdded: userAdded,
@@ -74,7 +74,7 @@ const AddUserToRoomForm: React.FC<AddUserToRoomFormProps> = ({
   };
   return (
     <>
-      <div className={cx("create-room", { dark: theme })}>
+      <div className={cx("create-room", { dark: darkTheme })}>
         <div className={cx("create-room-title")}>
           <h3>Tạo nhóm chat</h3>
         </div>
@@ -129,4 +129,4 @@ const AddUserToRoomForm: React.FC<AddUserToRoomFormProps> = ({
   );
 };
 
-export default AddUserToRoomForm;
+export default CreateRoomOrAddUser;

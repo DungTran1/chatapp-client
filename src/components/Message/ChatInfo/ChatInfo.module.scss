@@ -100,6 +100,16 @@
       height: 40px;
     }
   }
+  .displayName {
+    > h4:first-child {
+      font-weight: 500;
+    }
+    > p:last-child {
+      font-weight: 300;
+      color: #65676b;
+      font-size: 1.3rem;
+    }
+  }
 }
 
 .file-chat {

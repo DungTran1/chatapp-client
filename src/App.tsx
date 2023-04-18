@@ -1,10 +1,5 @@
 import { useEffect, useState } from "react";
-import {
-  BrowserRouter as Router,
-  Route,
-  Routes,
-  useParams,
-} from "react-router-dom";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import "firebase/compat/auth";
 import { auth } from "./shared/firebase";
 import { ToastContainer } from "react-toastify";
@@ -38,8 +33,8 @@ const App = () => {
 
   useEffect(() => {
     const handleOnline = () => {
-      socket.connect();
       setIsOnline(true);
+      socket.connect();
     };
     const handleOffline = () => {
       setIsOnline(false);

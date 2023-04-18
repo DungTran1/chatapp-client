@@ -9,17 +9,17 @@ import { ToastContainer } from "react-toastify";
 import { Socket } from "socket.io-client";
 import FormPopUp from "../components/FormPopUp/FormPopUp";
 const cx = classnames.bind(styles);
-interface LayoutProps {
+type LayoutProps = {
   children: React.ReactNode;
   socket: Socket;
-}
+};
 const Layout: React.FC<LayoutProps> = ({ children, socket }) => {
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
 
   return (
     <>
       <div className={cx("wrapper")}>
-        <div className={cx("container", { dark: theme })}>
+        <div className={cx("container", { dark: darkTheme })}>
           <ToastContainer />
           <FormPopUp socket={socket} />
           <HeaderMainLayout />

@@ -1,24 +1,13 @@
-export interface UsersTyping {
+export type UsersTyping = {
   status: boolean;
   user: User;
   roomId: string;
-}
-export interface Notification {
-  roomId?: string;
-  userId?: string;
-  quantum: number;
-}
+};
 
-export interface Chat {
+export type Chat = {
   chatNotificationSound: HTMLAudioElement;
-  isNotificationSound: boolean;
-  isNewMessage: boolean;
-  isFullViewMedia: boolean;
-  isDetailReaction: boolean;
-  notification: Notification[];
   usersTyping: UsersTyping[];
   userOnline: string[];
-  // currentRoom: Room | null;
   formPopUp:
     | "AddUserToGroupChat"
     | "CreateGroupChat"
@@ -27,28 +16,28 @@ export interface Chat {
     | "WatchMediaFile"
     | null;
   replyMessage: Message | null;
-}
-export interface User {
+};
+export type User = {
   _id: string;
   email: string;
-  displayName: string | null;
-  photoURL?: string;
-}
-export interface Messages {
+  displayName: string;
+  photoURL: string;
+};
+export type Messages = {
   page: number;
   messages: Message[];
   total_results: number;
-}
+};
 
-export interface UserInRoom {
+export type UserInRoom = {
   user: User;
   nickname: string;
-}
-export interface Reaction {
+};
+export type Reaction = {
   user: User;
   name: string;
-}
-export interface Message {
+};
+export type Message = {
   _id: string;
   roomId: string;
   text: string;
@@ -58,9 +47,9 @@ export interface Message {
   reaction: Reaction[];
   actedByUser: User | null;
   createdAt: Date;
-}
+};
 
-export interface Room {
+export type Room = {
   _id: string;
   type: "Group" | "Private";
   isAcceptLink: boolean;
@@ -69,7 +58,7 @@ export interface Room {
   photoURL: string;
   users: UserInRoom[];
   lastMessage: Message;
-}
-export interface Media {
+};
+export type Media = {
   files: string[];
-}
+};

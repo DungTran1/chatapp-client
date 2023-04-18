@@ -10,13 +10,13 @@ import { useParams } from "react-router-dom";
 import styles from "./UserReaction.module.scss";
 import classnames from "classnames/bind";
 const cx = classnames.bind(styles);
-interface UserReactedProps {
+type UserReactedProps = {
   socket: Socket;
   message: Message;
-}
+};
 const UserReacted: React.FC<UserReactedProps> = ({ message, socket }) => {
   const { roomId } = useParams();
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const { chatNotificationSound } = useAppSelector((state) => state.chat);
   const [isShowUserReaction, setIsShowUserReaction] = useState(false);
   const { UpdateReaction } = useActionQuery();
@@ -61,7 +61,7 @@ const UserReacted: React.FC<UserReactedProps> = ({ message, socket }) => {
         />
       )}
       <div
-        className={cx("user-reaction-wrapper", { dark: theme })}
+        className={cx("user-reaction-wrapper", { dark: darkTheme })}
         onClick={() => setIsShowUserReaction(!isShowUserReaction)}
       >
         <ul>

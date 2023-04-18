@@ -3,8 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import "react-lazy-load-image-component/src/effects/blur.css";
 
 import MessageInfoTab from "./ChatInfo/ChatInfo";
-import MessageContent from "./MessageContent/MessageContent";
-import MessageSubmit from "./MessageContent/MessageSubmit/MessageSubmit";
+import MessageSection from "./MessageSection/MessageSection";
+import MessageSubmit from "./MessageSection/MessageSubmit/MessageSubmit";
 
 import { useAppSelector } from "../../store/hook";
 
@@ -30,32 +30,26 @@ import { useActionQuery } from "../../service/Query/ActionQuery";
 import Loading from "../Common/Loading/Loading";
 
 const cx = classnames.bind(styles);
-interface MessageProps {
+type MessageProps = {
   socket: Socket;
-}
-const MessageSection: React.FC<MessageProps> = ({ socket }) => {
+};
+const MessageComp: React.FC<MessageProps> = ({ socket }) => {
   const { AddMessage, RevokeMessage } = useActionQuery();
   const [isToggleOption, setIsToggleOption] = useState(false);
   const { currentRoom } = useQuerySelector();
-  const isMobileOrTablet = useMediaQuery({ maxWidth: "54em" });
-  const isMobile = useMediaQuery({ maxWidth: "40em" });
+  const isTablet = useMediaQuery({ maxWidth: "46.25em" });
+
   const { chatNotificationSound } = useAppSelector((state) => state.chat);
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const user = useAppSelector((state) => state.auth.user);
   const skip = useRef(0);
   const { roomId } = useParams();
   useEffect(() => {
     skip.current = 0;
   }, [roomId]);
-
   const { data, hasNextPage, fetchNextPage, isLoading } =
     useInfiniteMessageQuery(roomId, skip.current);
-  const messages: Message[] = [];
-  data?.pages.forEach((e) => {
-    e?.messages.forEach((p) => {
-      messages.push(p);
-    });
-  });
+  const messages = data?.pages.map((page) => page.messages).flat() || [];
   useEffect(() => {
     const receiveSendMessage = (data: { message: Message }) => {
       skip.current = skip.current + 1;
@@ -71,7 +65,7 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
     };
     const listEvent = [
       ["receive_send_message", receiveSendMessage],
-      ["receive_type_message", receiveRevokeMessage],
+      ["receive_revoke_message", receiveRevokeMessage],
     ];
     addSocketEventListener(listEvent, socket);
     return () => {
@@ -100,21 +94,21 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
         messages.length > 0 && (
           <div
             className={`${cx("message-wrapper", {
-              dark: theme,
+              dark: darkTheme,
             })} 
           
         `}
           >
             {isLoading && <Loading />}
-            {(!isMobileOrTablet || (isMobileOrTablet && !isToggleOption)) && (
+            {(!isTablet || (isTablet && !isToggleOption)) && (
               <div
                 className={cx({
-                  dark: theme,
+                  dark: darkTheme,
                 })}
               >
                 <header>
                   <div>
-                    {isMobile && (
+                    {isTablet && (
                       <Link
                         to={"/chat"}
                         className={cx("back-room")}
@@ -148,7 +142,7 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
                 </header>
 
                 <div>
-                  <MessageContent
+                  <MessageSection
                     dataLength={data?.pages.length || 0}
                     messages={messages}
                     hasNextPage={hasNextPage}
@@ -171,4 +165,4 @@ const MessageSection: React.FC<MessageProps> = ({ socket }) => {
     </>
   );
 };
-export default React.memo(MessageSection);
+export default React.memo(MessageComp);

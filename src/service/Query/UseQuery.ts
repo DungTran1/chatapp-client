@@ -1,6 +1,6 @@
 import { useInfiniteQuery, useQuery } from "@tanstack/react-query";
-import { Message, Messages, Reaction, Room } from "../../shared/type";
-import { useAppSelector } from "../../store/hook";
+import { Messages, Reaction, Room } from "../../shared/type";
+
 import {
   CheckUserJoinLink,
   getListUserReaction,
@@ -11,14 +11,10 @@ import {
 import { get } from "../axiosConfig";
 
 export const useRoomQuery = (userId: string | undefined) => {
-  const query = useQuery<Room[], Error>(
-    ["room", userId],
-    () => getRooms(userId),
-    {
-      // refetchInterval: 2000,
-      refetchOnWindowFocus: false,
-    }
-  );
+  const query = useQuery<Room[], Error>(["room"], () => getRooms(userId), {
+    staleTime: Infinity,
+    enabled: !!userId,
+  });
 
   return query;
 };
@@ -45,9 +41,11 @@ export const useInfiniteMessageQuery = (
           ? lastPage.page + 1
           : undefined;
       },
+
       cacheTime: Infinity,
       refetchOnWindowFocus: false,
       staleTime: Infinity,
+      // refetchOnMount: true,
       refetchOnReconnect: "always",
     }
   );
@@ -58,7 +56,7 @@ export const useCurrentRoomQuery = (roomId: string | undefined) => {
     ["currentRoom"],
     () => get("auth/getCurrentRoom/" + roomId),
     {
-      // refetchInterval: 2000,
+      // staleTime: Infinity,
     }
   );
   return query;

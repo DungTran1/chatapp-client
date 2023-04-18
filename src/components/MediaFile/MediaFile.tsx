@@ -13,7 +13,7 @@ import ListMedia from "./ListMediaFile";
 import styles from "./MediaFile.module.scss";
 const cx = classnames.bind(styles);
 
-interface MediaProps {}
+type MediaProps = {};
 
 const MediaSection: React.FC<MediaProps> = ({}) => {
   const dispatch = useAppDispatch();
@@ -26,7 +26,10 @@ const MediaSection: React.FC<MediaProps> = ({}) => {
   return (
     <div className={cx("media-wrapper")}>
       {isLoading && <Loading />}
-      {data.files.length > 0 && !isLoading && <ListMedia media={data} />}
+      {data.files.length > 0 && !isLoading && <ListMedia files={data.files} />}
+      {!data.files.length && !isLoading && (
+        <div className={cx("empty-file")}>Không có file nào để hiển thị</div>
+      )}
       <button
         className={cx("close-file")}
         onClick={() => dispatch(setFormPopUp(null))}

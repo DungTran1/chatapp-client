@@ -11,14 +11,14 @@ import classnames from "classnames/bind";
 import { useAppSelector } from "../../store/hook";
 import Title from "../Common/Title";
 const cx = classnames.bind(styles);
-interface IFormInput {
+type IFormInput = {
   username: string;
   password: string;
   email: string;
-}
-interface SignInWithProviderProps {
+};
+type SignInWithProviderProps = {
   setChangeForm: React.Dispatch<React.SetStateAction<string>>;
-}
+};
 const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
   setChangeForm,
 }) => {
@@ -48,7 +48,7 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
       {curUser && !isLoading && (
         <ModalNotification type="success" message="Sign in successfully" />
       )}
-      {isLoading && <Loading isTheme={false} />}
+      {isLoading && <Loading isNoTheme={false} />}
       {error && (
         <ModalNotification type="error" message={error} setError={setError} />
       )}

@@ -10,13 +10,14 @@ import { useSearchUser } from "../../service/Query/UseQuery";
 
 import styles from "./Search.module.scss";
 import classnames from "classnames/bind";
+import { defaultPhoto } from "../../shared/utils";
 
 const cx = classnames.bind(styles);
-interface SearchBoxProps {
+type SearchBoxProps = {
   socket: Socket;
-}
+};
 const SearchRoom: React.FC<SearchBoxProps> = ({ socket }) => {
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const [search, setSearch] = useState("");
   const user = useAppSelector((state) => state.auth.user);
   const searchInputRef = useRef() as any;
@@ -44,20 +45,20 @@ const SearchRoom: React.FC<SearchBoxProps> = ({ socket }) => {
 
   return (
     <div
-      className={cx("search-user-private-chat", { dark: theme })}
+      className={cx("search-user-private-chat", { dark: darkTheme })}
       ref={searchInputRef}
     >
       <Tippy
         interactive
         visible={searchResult.length ? true : false}
-        maxWidth="100%"
+        maxWidth={500}
         onClickOutside={() => setSearch("")}
         offset={[0, 0]}
         render={() => {
           return (
             <>
               {search && searchResult.length > 0 && !isLoading && (
-                <div className={cx("search-result", { dark: theme })}>
+                <div className={cx("search-result", { dark: darkTheme })}>
                   <ul>
                     {searchResult.map((item) => {
                       return (
@@ -69,10 +70,7 @@ const SearchRoom: React.FC<SearchBoxProps> = ({ socket }) => {
                             width={40}
                             height={40}
                             effect="blur"
-                            src={
-                              item.photoURL ||
-                              require("../../assets/image/user.png")
-                            }
+                            src={item.photoURL || defaultPhoto("user.png")}
                             alt=""
                           />
                           <p>{item.displayName}</p>
@@ -97,7 +95,7 @@ const SearchRoom: React.FC<SearchBoxProps> = ({ socket }) => {
         {(!search && <CiSearch size={20} color={"#858585"} />) || (
           <AiFillCloseCircle
             size={20}
-            color={theme ? "#6c6c6c" : "#c7c7c7"}
+            color={darkTheme ? "#6c6c6c" : "#c7c7c7"}
             onClick={handleClose}
           />
         )}

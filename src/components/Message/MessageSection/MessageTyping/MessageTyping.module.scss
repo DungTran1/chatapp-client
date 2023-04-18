@@ -1,0 +1,16 @@
+.display-typing {
+  display: flex;
+  justify-content: flex-start;
+  animation: typing 0.2s ease-in-out forwards;
+  position: absolute;
+  bottom: -10px;
+  left: 5px;
+}
+@keyframes typing {
+  0% {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}

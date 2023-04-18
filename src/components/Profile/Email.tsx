@@ -3,7 +3,7 @@ import { useAppSelector } from "../../store/hook";
 import classnames from "classnames/bind";
 import styles from "./ProfileComp.module.scss";
 const cx = classnames.bind(styles);
-interface EmailProps {}
+type EmailProps = {};
 const Email: React.FC<EmailProps> = ({}) => {
   const user = useAppSelector((state) => state.auth.user);
 

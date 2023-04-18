@@ -5,13 +5,13 @@ import React from "react";
 import { useAppSelector } from "../../store/hook";
 const cx = classnames.bind(styles);
 
-interface PasswordProps {
+type PasswordProps = {
   isUpdatedPassword: boolean;
   setIsUpdatedPassword: React.Dispatch<React.SetStateAction<boolean>>;
   setIsRetypedPassword: any;
   setIsShowPromptReAuthFor: any;
   newPasswordValueRef: any;
-}
+};
 const Password: React.FC<PasswordProps> = ({
   isUpdatedPassword,
   setIsUpdatedPassword,
@@ -19,7 +19,7 @@ const Password: React.FC<PasswordProps> = ({
   setIsShowPromptReAuthFor,
   newPasswordValueRef,
 }) => {
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   return (
     <div className={cx("change__password")}>
       <h4>Change Password</h4>
@@ -34,7 +34,7 @@ const Password: React.FC<PasswordProps> = ({
       )}
       <div>
         <form
-          className={cx({ dark: theme })}
+          className={cx({ dark: darkTheme })}
           onSubmit={(e) => {
             e.preventDefault();
             e.stopPropagation();

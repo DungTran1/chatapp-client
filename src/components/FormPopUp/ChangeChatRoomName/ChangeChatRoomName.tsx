@@ -9,13 +9,13 @@ import Overlay from "../../Common/Overlay/Overlay";
 import classnames from "classnames/bind";
 import styles from "./ChangeChatRoomName.module.scss";
 const cx = classnames.bind(styles);
-interface ChangeChatRoomNameProps {
+type ChangeChatRoomNameProps = {
   socket: Socket;
-}
+};
 const ChangeChatRoomName: React.FC<ChangeChatRoomNameProps> = ({ socket }) => {
   const dispatch = useAppDispatch();
   const changeRef = useRef<HTMLInputElement>(null);
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const { currentRoom } = useQuerySelector();
   const { user } = useAppSelector((state) => state.auth);
   const handleChangeRoomName = () => {
@@ -28,7 +28,7 @@ const ChangeChatRoomName: React.FC<ChangeChatRoomNameProps> = ({ socket }) => {
   };
   return (
     <>
-      <div className={cx("wrapper", { dark: theme })}>
+      <div className={cx("wrapper", { dark: darkTheme })}>
         <div className={cx("title")}>
           <h4>Đổi tên đoạn chat</h4>
           <button

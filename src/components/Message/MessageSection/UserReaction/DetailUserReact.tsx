@@ -1,23 +1,22 @@
-import classnames from "classnames/bind";
-import { Fragment, useMemo, useState } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 import { AiFillCloseCircle } from "react-icons/ai";
 import { LazyLoadImage } from "react-lazy-load-image-component";
 import { Reaction, User } from "../../../../shared/type";
 import { getReactionEmoji } from "../../../../shared/utils";
-import { useAppDispatch, useAppSelector } from "../../../../store/hook";
+import { useAppSelector } from "../../../../store/hook";
 import Overlay from "../../../Common/Overlay/Overlay";
+import classnames from "classnames/bind";
 import styles from "./UserReaction.module.scss";
-import React from "react";
 const cx = classnames.bind(styles);
-interface DetailUserReactProps {
+type DetailUserReactProps = {
   data: Reaction[] | undefined;
   setIsShowUserReaction: React.Dispatch<React.SetStateAction<boolean>>;
-}
+};
 const DetailUserReact: React.FC<DetailUserReactProps> = ({
   data,
   setIsShowUserReaction,
 }) => {
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const [tab, setTab] = useState("all");
 
   const reactions = useMemo(() => {
@@ -92,12 +91,15 @@ const DetailUserReact: React.FC<DetailUserReactProps> = ({
 
   return (
     <>
-      <div className={cx("wrapper", { dark: theme })}>
+      <div className={cx("wrapper", { dark: darkTheme })}>
         <div
           className={cx("close")}
           onClick={() => setIsShowUserReaction(false)}
         >
-          <AiFillCloseCircle size="25" color={theme ? "#525252" : "#c7c7c7"} />
+          <AiFillCloseCircle
+            size="25"
+            color={darkTheme ? "#525252" : "#c7c7c7"}
+          />
         </div>
         <h6>Cam xuc ve tin nhan</h6>
         <div className={cx("tab")}>
@@ -111,25 +113,22 @@ const DetailUserReact: React.FC<DetailUserReactProps> = ({
           </div>
           {Object.entries(reactions).map((type, index) => {
             if (!type[1].userReact.length) {
-              return <></>;
+              return "";
             }
-            console.log(type[0]);
             return (
-              <>
-                <div
-                  key={type[0]}
-                  className={cx("tab-single", {
-                    currentTab: type[0] === tab,
-                  })}
-                  onClick={() => setTab(type[0])}
-                >
-                  <img src={type[1].icon} alt="" />
-                  <span className={cx("quantum")}>
-                    {type[1].userReact.length}
-                  </span>
-                  <div className={cx("line")}></div>
-                </div>
-              </>
+              <div
+                key={type[0]}
+                className={cx("tab-single", {
+                  currentTab: type[0] === tab,
+                })}
+                onClick={() => setTab(type[0])}
+              >
+                <img src={type[1].icon} alt="" />
+                <span className={cx("quantum")}>
+                  {type[1].userReact.length}
+                </span>
+                <div className={cx("line")}></div>
+              </div>
             );
           })}
         </div>
@@ -160,6 +159,7 @@ const DetailUserReact: React.FC<DetailUserReactProps> = ({
                 </Fragment>
               );
             }
+            return "";
           })}
         </ul>
       </div>
@@ -168,4 +168,4 @@ const DetailUserReact: React.FC<DetailUserReactProps> = ({
   );
 };
 
-export default DetailUserReact;
+export default React.memo(DetailUserReact);

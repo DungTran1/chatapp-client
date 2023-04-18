@@ -21,15 +21,17 @@ import styles from "./Room.module.scss";
 
 import { useActionQuery } from "../../service/Query/ActionQuery";
 import { useQuerySelector } from "../../service/Query/querySelector";
+import { useQueryClient } from "@tanstack/react-query";
 
 const cx = classnames.bind(styles);
-interface RoomJoinedProps {
+type RoomJoinedProps = {
   data: Room[] | undefined;
   socket: Socket;
-}
+};
 const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
+  const queryClient = useQueryClient();
   const dispatch = useAppDispatch();
-  const theme = useAppSelector((state) => state.theme.theme);
+  const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const { userOnline } = useAppSelector((state) => state.chat);
   const { currentRoom } = useQuerySelector();
   const { UpdateCurrentRoom, CreateRoom, UpdateLastMessage } = useActionQuery();
@@ -46,8 +48,7 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
       } else toastMessage("error", data.message);
     };
     const receiveLastMessage = async (data: { lastMessage: Message }) => {
-      if (!user) return;
-      UpdateLastMessage(user, data.lastMessage);
+      UpdateLastMessage(data.lastMessage);
     };
     const listEvent = [
       ["receive_created_room", receiveCreateRoom],
@@ -64,6 +65,7 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
       oldRoom: currentRoom?._id,
       newRoom: room._id,
     });
+    queryClient.invalidateQueries(["messages", room._id]);
     UpdateCurrentRoom(room);
   };
   const displayNicknameOrDefaultName = (mess: Message, room: Room) => {
@@ -170,12 +172,12 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
   };
 
   return (
-    <div className={`${cx("room-joined", { dark: theme })} `}>
+    <div className={`${cx("room-joined", { dark: darkTheme })} `}>
       <div>
         <div className={cx("room-title")}>
           <h4>Chat</h4>
           <button onClick={() => dispatch(setFormPopUp("CreateGroupChat"))}>
-            <BsPencilSquare size="20" color={theme ? "#fff" : ""} />
+            <BsPencilSquare size="20" color={darkTheme ? "#fff" : ""} />
           </button>
         </div>
 
@@ -201,7 +203,7 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
                   <NavLink
                     to={"/chat/" + room._id}
                     className={({ isActive }) =>
-                      isActive ? cx("currentRoom", { dark: theme }) : ""
+                      isActive ? cx("currentRoom", { dark: darkTheme }) : ""
                     }
                   >
                     <LazyLoadImage

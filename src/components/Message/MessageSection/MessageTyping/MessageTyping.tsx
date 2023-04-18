@@ -23,8 +23,8 @@ const MessageTyping = () => {
             >
               <LazyLoadImage
                 effect="blur"
-                width={40}
-                height={40}
+                width={30}
+                height={30}
                 src={userTyping.user.photoURL}
                 alt=""
               />
