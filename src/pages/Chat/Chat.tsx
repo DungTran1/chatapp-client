@@ -50,7 +50,7 @@ const Chat: React.FC<ChatProps> = ({ socket }) => {
   useEffect(() => {
     const receiveResetRoom = (roomId?: string) => {
       resetRoom();
-      if (roomId === currentRoom?._id) {
+      if (roomId === ref.current) {
         navigate("/chat");
       }
     };
