@@ -60,7 +60,7 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({
               (type === "success" && "Oh Yeah!")}
           </h2>
           {type === "error" && <p>{message}</p>}
-          {type === "success" && <p>Successfully logged.</p>}
+          {type === "success" && <p>Đăng nhập thành công.</p>}
           <button
             style={{
               backgroundColor: `${type === "success" ? "blue" : "red"}`,
@@ -80,8 +80,8 @@ const ModalNotification: React.FC<ModalNotificationProps> = ({
             }}
           >
             <span>
-              {(type === "error" && "TRY AGAIN") ||
-                (type === "success" && "CONTINUE")}
+              {(type === "error" && "THỬ LẠI") ||
+                (type === "success" && "TIẾP TỤC")}
             </span>
             <i> ({timeLeft})</i>
           </button>

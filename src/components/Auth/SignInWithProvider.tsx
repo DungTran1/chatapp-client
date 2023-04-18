@@ -36,11 +36,13 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
       return;
     }
     signInWithEmailAndPassword(auth, data.email, data.password)
-      .then(() => {})
+      .then(() => {
+        setIsLoading(false);
+      })
       .catch((error) => {
         setError(convertErrorCodeToMessage(error));
-      })
-      .finally(() => setIsLoading(false));
+        setIsLoading(false);
+      });
   };
   return (
     <>

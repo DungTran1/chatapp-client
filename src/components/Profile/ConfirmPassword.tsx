@@ -23,15 +23,15 @@ const ComfirmPassword: React.FC<Props> = ({
         }}
         className={cx("update__password")}
       >
-        <p className="">Type your old password again to reauthenticate</p>
+        <p className="">Nhập mật khẩu hiện tại để xác thực</p>
         <input
           ref={oldPasswordValueRef}
           type="password"
           autoFocus
           className=""
-          placeholder="Type your old password..."
+          placeholder="Nhập mặt khẩu..."
         />
-        <button className="">Continue</button>
+        <button className="">Tiếp tục</button>
       </form>
       <div className={cx("overlay")}></div>
     </>

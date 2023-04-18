@@ -24,17 +24,22 @@ import { post } from "../../service/axiosConfig";
 import classnames from "classnames/bind";
 import styles from "./Profile.module.scss";
 import Title from "../../components/Common/Title";
+import { useActionQuery } from "../../service/Query/ActionQuery";
+import Loading from "../../components/Common/Loading/Loading";
 const cx = classnames.bind(styles);
 
 const Profile = () => {
   const isTabletMobile = useMediaQuery({ query: "(max-width:64em)" });
   const firebaseUser = auth.currentUser;
   const user = useAppSelector((state) => state.auth.user);
+  const { resetRoom } = useActionQuery();
   const [isUpdatedPassword, setIsUpdatedPassword] = useState(false);
   const [isShowPromptReAuthFor, setIsShowPromptReAuthFor] = useState<
     string | undefined
   >();
   const [isRetypedPassword, setIsRetypedPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
   const dispatch = useAppDispatch();
   const oldPasswordValueRef = useRef<HTMLInputElement>(null!);
   const newPasswordValueRef = useRef<HTMLInputElement>(null!);
@@ -54,10 +59,10 @@ const Profile = () => {
       toastMessage("error", "You must type something!");
       return;
     }
-
+    setIsLoading(true);
     const credential = EmailAuthProvider.credential(
       // @ts-ignore
-      currentUser.email,
+      firebaseUser.email,
       oldPassword
     );
 
@@ -93,8 +98,10 @@ const Profile = () => {
             uid: user?._id,
             displayName: newDisplayName,
           }).then(() => {
+            setIsLoading(false);
             toastMessage("success", "Change name successfully");
             dispatch(updateDisplayName(newDisplayName));
+            resetRoom();
           });
         })
         .catch((error: any) =>
@@ -114,6 +121,7 @@ const Profile = () => {
     // @ts-ignore
     updatePassword(firebaseUser, newPassword)
       .then(async () => {
+        setIsLoading(false);
         toastMessage("success", "Change password successfully");
         newPasswordValueRef.current.value = "";
       })
@@ -128,6 +136,7 @@ const Profile = () => {
 
   return (
     <div className={cx("profile")}>
+      {isLoading && <Loading />}
       <Title value={"Profile"} />
       <h1>ACCOUNT SETTINGS</h1>
       <div className={`${cx("information")} row`}>
