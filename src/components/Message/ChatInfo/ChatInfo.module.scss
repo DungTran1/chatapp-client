@@ -102,6 +102,9 @@
   }
   .displayName {
     > h4:first-child {
+      max-width: 200px;
+      overflow: hidden;
+      text-overflow: ellipsis;
       font-weight: 500;
     }
     > p:last-child {

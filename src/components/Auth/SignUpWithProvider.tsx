@@ -59,7 +59,7 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
       };
       await post("auth/signup", userInfo)
         .then((res) => {
-          resetRoom(user.uid);
+          resetRoom();
           return dispatch(getSignIn(userInfo));
         })
         .catch((error) => {

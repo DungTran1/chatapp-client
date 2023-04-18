@@ -78,7 +78,7 @@ export const useActionQuery = () => {
       }
     );
   };
-  const resetRoom = (userId: string) => {
+  const resetRoom = () => {
     queryClient.invalidateQueries(["room"]);
     queryClient.invalidateQueries(["currentRoom"]);
   };

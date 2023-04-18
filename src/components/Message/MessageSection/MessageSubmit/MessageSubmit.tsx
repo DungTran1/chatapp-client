@@ -94,6 +94,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
     setInputValue(e.target.value);
   };
   const displayNicknameOrDefaultName = (mess: Message) => {
+    if (mess.actedByUser?._id === user?._id) return "Mình";
     return (
       currentRoom?.users.find((u) => u.user._id === mess.actedByUser?._id)
         ?.nickname || mess.actedByUser?.displayName
@@ -126,7 +127,7 @@ const MessageSubmit: React.FC<MessageSubmitProps> = ({ socket }) => {
       {replyMessage && (
         <div className={cx("reply-message")}>
           <div className={cx("user-replied")}>
-            <span>Đang trả lời </span>
+            <span>Bạn đang trả lời 1 tin nhắn của </span>
             <span className={cx("user-name-replied")}>
               {displayNicknameOrDefaultName(replyMessage)}
             </span>

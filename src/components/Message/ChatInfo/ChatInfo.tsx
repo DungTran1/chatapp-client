@@ -70,13 +70,12 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
     if (e.target.files) {
       const photoURL = await uploadImage(e.target.files[0]);
       setIsLoading(true);
-      console.log(photoURL);
       if (photoURL) {
         await post("auth/updateRoomProfile", {
           roomId: currentRoom?._id,
           photoURL,
         });
-        resetRoom(user?._id || "");
+        resetRoom();
         setIsLoading(false);
       }
     }
