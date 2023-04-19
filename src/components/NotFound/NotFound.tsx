@@ -14,12 +14,11 @@ const NotFound = () => {
       <img src={Meteor} className={cx("meteor")} alt="" />
       <p className={cx("title")}>Oh no!!</p>
       <p className={cx("subtitle")}>
-        You’re either misspelling the URL <br /> or requesting a page that's no
-        longer here.
+        Đường dẫn không hợp lệ <br /> hoặc yêu cầu trang không còn nữa.
       </p>
       <div className={cx("back")}>
         <Link className={cx("btn-back")} to="/chat">
-          Back to previous page
+          Trở về
         </Link>
       </div>
       <img src={Astronaut} className={cx("astronaut")} alt="" />

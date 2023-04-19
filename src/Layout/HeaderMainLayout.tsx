@@ -11,11 +11,13 @@ import styles from "./MainLayout.module.scss";
 import classnames from "classnames/bind";
 import { useRef } from "react";
 import { useMediaQuery } from "react-responsive";
+import { useQuerySelector } from "../service/Query/querySelector";
 
 const cx = classnames.bind(styles);
 type HeaderMainLayoutProps = {};
 const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
   const darkTheme = useAppSelector((state) => state.theme.darkTheme);
+  const { currentRoom } = useQuerySelector();
   const { roomId } = useParams();
   const isTablet = useMediaQuery({ maxWidth: "46.25em" });
   const dispatch = useAppDispatch();
@@ -60,7 +62,9 @@ const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
               </NavLink>
             </li>
             <li>
-              <NavLink to={"/chat"}>
+              <NavLink
+                to={currentRoom?._id ? `/chat/${currentRoom._id}` : "/chat"}
+              >
                 {({ isActive }) => (
                   <MdGroups
                     size={30}

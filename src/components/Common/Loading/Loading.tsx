@@ -1,9 +1,7 @@
 import { BallTriangle } from "react-loader-spinner";
 import Overlay from "../Overlay/Overlay";
-type LoadingType = {
-  isNoTheme?: boolean;
-};
-const Loading: React.FC<LoadingType> = ({ isNoTheme }) => {
+type LoadingType = {};
+const Loading: React.FC<LoadingType> = ({}) => {
   return (
     <>
       <BallTriangle
@@ -22,7 +20,7 @@ const Loading: React.FC<LoadingType> = ({ isNoTheme }) => {
         ariaLabel="ball-triangle-loading"
         // wrapperClass={cx("progress-bar-wrapper")}
       />
-      <Overlay isNoTheme={isNoTheme} position="fixed" />
+      <Overlay position="fixed" />
     </>
   );
 };

@@ -3,10 +3,9 @@ import classnames from "classnames/bind";
 import styles from "./Overlay.module.scss";
 const cx = classnames.bind(styles);
 type OverlayProps = {
-  isNoTheme?: boolean;
   position: "absolute" | "fixed";
 };
-const Overlay: React.FC<OverlayProps> = ({ position, isNoTheme = false }) => {
+const Overlay: React.FC<OverlayProps> = ({ position }) => {
   const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   return (
     <div
@@ -14,7 +13,6 @@ const Overlay: React.FC<OverlayProps> = ({ position, isNoTheme = false }) => {
       className={cx({
         overlay: true,
         dark: darkTheme,
-        isNoTheme: isNoTheme,
       })}
     ></div>
   );

@@ -12,6 +12,7 @@ import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { getSignIn } from "../../reducer/AuthReducer";
 import Title from "../Common/Title";
 import { useActionQuery } from "../../service/Query/ActionQuery";
+import { FirebaseError } from "firebase/app";
 const cx = classnames.bind(styles);
 type IFormInput = {
   username: string;
@@ -35,10 +36,10 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
     formState: { errors },
   } = useForm<IFormInput>();
   const onSubmit = async (data: IFormInput) => {
-    setIsLoading(true);
     if (!data.email.trim() || !data.password.trim() || !data.username.trim()) {
       return;
     }
+    setIsLoading(true);
     const user = await createUserWithEmailAndPassword(
       auth,
       data.email,
@@ -47,10 +48,8 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
       .then((res) => res.user)
       .catch((error) => {
         setError(convertErrorCodeToMessage(error));
-        console.log(convertErrorCodeToMessage(error));
       });
     if (user) {
-      console.log(user);
       const userInfo = {
         _id: user.uid,
         photoURL: "",
@@ -63,8 +62,8 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
           resetRoom();
           return dispatch(getSignIn(userInfo));
         })
-        .catch((error) => {
-          setError(convertErrorCodeToMessage(error));
+        .catch((error: FirebaseError) => {
+          setError(convertErrorCodeToMessage(error.code));
           setIsLoading(false);
         });
     }

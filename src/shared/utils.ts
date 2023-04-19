@@ -21,15 +21,16 @@ export const getReactionEmoji = (name: string) => {
 // };
 export const convertErrorCodeToMessage = (errorCode: string) => {
   if (errorCode === "auth/email-already-in-use")
-    return "Your email is already in use.";
-  else if (errorCode === "auth/user-not-found")
-    return "Your email may be incorrect.";
-  else if (errorCode === "auth/wrong-password")
-    return "Your password is incorrect.";
-  else if (errorCode === "auth/invalid-email") return "Your email is invalid";
+    return "Email đã được sử dụng.";
+  else if (
+    errorCode === "auth/wrong-password" ||
+    errorCode === "auth/user-not-found"
+  )
+    return "Tài khoản hoặc mật khẩu không chính xác.";
+  else if (errorCode === "auth/invalid-email") return "Email không hợp lệ";
   else if (errorCode === "auth/too-many-requests")
-    return "You request too many times!";
-  else return "Something weird happened.";
+    return "Bạn đã yêu cầu quá nhiều!";
+  else return "Lỗi đăng nhập bạn hãy thử lại.";
 };
 export const displayLastTimeUserChat = (time: Date) => {
   if (!time) return null;

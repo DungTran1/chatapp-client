@@ -10,6 +10,7 @@ import styles from "./SignIn.module.scss";
 import classnames from "classnames/bind";
 import { useAppSelector } from "../../store/hook";
 import Title from "../Common/Title";
+import { FirebaseError } from "firebase/app";
 const cx = classnames.bind(styles);
 type IFormInput = {
   username: string;
@@ -31,16 +32,16 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
     formState: { errors },
   } = useForm<IFormInput>();
   const onSubmit = async (data: IFormInput) => {
-    setIsLoading(true);
     if (!data.email.trim() || !data.password.trim()) {
       return;
     }
+    setIsLoading(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
       .then(() => {
         setIsLoading(false);
       })
-      .catch((error) => {
-        setError(convertErrorCodeToMessage(error));
+      .catch((error: FirebaseError) => {
+        setError(convertErrorCodeToMessage(error.code));
         setIsLoading(false);
       });
   };
@@ -50,7 +51,7 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
       {curUser && !isLoading && (
         <ModalNotification type="success" message="Sign in successfully" />
       )}
-      {isLoading && <Loading isNoTheme={false} />}
+      {isLoading && <Loading />}
       {error && (
         <ModalNotification type="error" message={error} setError={setError} />
       )}
