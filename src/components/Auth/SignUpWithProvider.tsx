@@ -58,12 +58,13 @@ const SignInWithProvider: React.FC<SignUpWithProviderProps> = ({
       };
       await post("auth/signup", userInfo)
         .then((res) => {
-          setIsLoading(false);
           resetRoom();
           return dispatch(getSignIn(userInfo));
         })
         .catch((error: FirebaseError) => {
           setError(convertErrorCodeToMessage(error.code));
+        })
+        .finally(() => {
           setIsLoading(false);
         });
     }

@@ -3,7 +3,7 @@ import { Swiper, SwiperSlide } from "swiper/react";
 
 import "swiper/css";
 import classnames from "classnames/bind";
-import styles from "./MediaFile.module.scss";
+import styles from "./MessageMediaFile.module.scss";
 
 import { useSearchParams } from "react-router-dom";
 const cx = classnames.bind(styles);

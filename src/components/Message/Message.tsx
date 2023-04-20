@@ -20,14 +20,15 @@ import {
   removeSocketEventListener,
 } from "../../shared/utils";
 
-import classnames from "classnames/bind";
-import styles from "./Message.module.scss";
 import { useQuerySelector } from "../../service/Query/querySelector";
 import { useInfiniteMessageQuery } from "../../service/Query/UseQuery";
 import { Link, useParams } from "react-router-dom";
 import { Message } from "../../shared/type";
 import { useActionQuery } from "../../service/Query/ActionQuery";
 import Loading from "../Common/Loading/Loading";
+
+import classnames from "classnames/bind";
+import styles from "./Message.module.scss";
 
 const cx = classnames.bind(styles);
 type MessageProps = {
@@ -72,7 +73,6 @@ const MessageComp: React.FC<MessageProps> = ({ socket }) => {
       removeSocketEventListener(listEvent, socket);
     };
   }, []);
-
   const displayPrivateOrGroupChat = () => {
     if (!currentRoom) {
       return;

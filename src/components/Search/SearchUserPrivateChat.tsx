@@ -1,6 +1,7 @@
 import { User } from "../../shared/type";
 import { AiFillCloseCircle } from "react-icons/ai";
-import Tippy from "@tippyjs/react/headless";
+import Tippy from "@tippyjs/react";
+import "tippy.js/dist/tippy.css";
 import { useAppSelector } from "../../store/hook";
 import { useRef, useState } from "react";
 import { CiSearch } from "react-icons/ci";

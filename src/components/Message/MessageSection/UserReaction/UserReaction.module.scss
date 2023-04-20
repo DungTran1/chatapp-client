@@ -50,7 +50,7 @@
   min-height: 210px;
   transform: translate(-50%, 50%);
   background-color: #fff;
-  box-shadow: 0 0 5px 1px #d3d3d3;
+  box-shadow: 0 0 5px #d3d3d3;
   border-radius: 10px;
   padding: 15px;
   z-index: 999999;
@@ -58,6 +58,7 @@
   h6 {
     text-align: center;
     font-size: 1.5rem;
+    font-weight: 500;
   }
   .close {
     cursor: pointer;
@@ -99,7 +100,7 @@
 }
 .tab-all {
   color: #ff3535;
-  padding: 10px 20px 5px 20px;
+  padding: 15px 20px 15px 20px;
   font-size: 1.8rem;
   position: relative;
   display: flex;
@@ -108,8 +109,6 @@
 }
 .currentTab {
   position: relative;
-  &::after {
-  }
 }
 .currentTab .line {
   transition: all 0.1s ease;
@@ -121,19 +120,14 @@
   border-bottom: 4px solid #ff3535;
 }
 .tab-single {
-  padding: 10px 20px 5px 20px;
+  padding: 15px 20px 15px 20px;
   position: relative;
   cursor: pointer;
-  // width: 12.5%;
-  // height: 25px;
   display: flex;
   align-items: center;
   img {
     width: 25px;
     height: 25px;
-  }
-  & + .tab-single {
-    // margin-left: 20px;
   }
 }
 
@@ -180,7 +174,7 @@
   }
   &.wrapper {
     background-color: #262626;
-    box-shadow: 0 0 5px 1px #222222;
+    box-shadow: 0 0 5px #222222;
   }
 }
 @include breakpoints(smallDesktop) {
@@ -191,5 +185,31 @@
 @include breakpoints(tablet) {
   .wrapper {
     width: 80%;
+  }
+}
+@include breakpoints(mobile) {
+  .wrapper {
+    width: 95%;
+    padding: 5px;
+  }
+  .tab {
+    padding-left: 10px;
+  }
+  .tab-all {
+    font-size: 1.5rem;
+  }
+  .tab-all,
+  .tab-single {
+    padding: 10px 6px 10px 6px;
+  }
+  .tab-single img {
+    width: 20px;
+    height: 20px;
+  }
+  .list-user li {
+    padding-left: 5px;
+  }
+  .user > p {
+    font-size: 1.4rem;
   }
 }

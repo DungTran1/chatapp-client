@@ -8,19 +8,18 @@ import { useSearchParams } from "react-router-dom";
 import { setFormPopUp } from "../../../../reducer/ChatReducer";
 import { useQuerySelector } from "../../../../service/Query/querySelector";
 import { CiPlay1 } from "react-icons/ci";
+import Tippy from "@tippyjs/react/headless";
 
 const cx = classnames.bind(styles);
 type MessageContentProps = {
   file: string[];
   messCur: Message;
-  messNext: Message;
-  messPrev: Message;
+  messNext: Message | undefined;
 };
 
 const MessageContent: React.FC<MessageContentProps> = ({
   messCur,
   messNext,
-  messPrev,
   file,
 }) => {
   const dispatch = useAppDispatch();
@@ -42,17 +41,33 @@ const MessageContent: React.FC<MessageContentProps> = ({
     activedBy?.displayName;
   const displayNameAndImage = user?._id !== messCur?.actedByUser?._id && (
     <>
-      {messCur.actedByUser?._id !== messNext?.actedByUser?._id && (
+      {/* {messCur.actedByUser?._id !== messNext?.actedByUser?._id && (
         <p className={cx("user-name")}>{displayNicknameOrDefaultName}</p>
-      )}
-      {((messCur.type === "Sending" || messCur.type === "Revocation") &&
-        messCur.actedByUser?._id !== messPrev?.actedByUser?._id && (
+      )} */}
+      {messNext &&
+      (messCur.type === "Sending" || messCur.type === "Revocation") &&
+      (messCur.actedByUser?._id !== messNext?.actedByUser?._id ||
+        messNext.type === "Notification") ? (
+        <Tippy
+          arrow={true}
+          placement="top-start"
+          render={(attr) => {
+            return (
+              <p {...attr} className={cx("user-name")}>
+                {displayNicknameOrDefaultName}
+              </p>
+            );
+          }}
+        >
           <img
             src={messCur.actedByUser?.photoURL}
             className={cx("user-photo")}
             alt=""
           />
-        )) || <div className={cx("img-user-distance")}></div>}
+        </Tippy>
+      ) : (
+        <div className={cx("img-user-distance")}></div>
+      )}
     </>
   );
   return (
@@ -130,6 +145,7 @@ const MessageContent: React.FC<MessageContentProps> = ({
           </div>
         </>
       )}
+
       {messCur.type === "Notification" && (
         <>
           <p>

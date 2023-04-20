@@ -1,16 +1,16 @@
 import { useQuery } from "@tanstack/react-query";
 import classnames from "classnames/bind";
-import { getMedia } from "../../service/api";
-import { Media } from "../../shared/type";
+import { getMedia } from "../../../service/api";
+import { Media } from "../../../shared/type";
 import { IoMdCloseCircle } from "react-icons/io";
 
-import { useAppDispatch } from "../../store/hook";
-import { setFormPopUp } from "../../reducer/ChatReducer";
-import { useQuerySelector } from "../../service/Query/querySelector";
-import Loading from "../Common/Loading/Loading";
+import { useAppDispatch } from "../../../store/hook";
+import { setFormPopUp } from "../../../reducer/ChatReducer";
+import { useQuerySelector } from "../../../service/Query/querySelector";
+import Loading from "../../Common/Loading/Loading";
 
 import ListMedia from "./ListMediaFile";
-import styles from "./MediaFile.module.scss";
+import styles from "./MessageMediaFile.module.scss";
 const cx = classnames.bind(styles);
 
 type MediaProps = {};

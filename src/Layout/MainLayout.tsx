@@ -22,7 +22,7 @@ const Layout: React.FC<LayoutProps> = ({ children, socket }) => {
         <div className={cx("container", { dark: darkTheme })}>
           <ToastContainer />
           <FormPopUp socket={socket} />
-          <HeaderMainLayout />
+          <HeaderMainLayout socket={socket} />
           <div className={cx("children")}>{children}</div>
         </div>
       </div>

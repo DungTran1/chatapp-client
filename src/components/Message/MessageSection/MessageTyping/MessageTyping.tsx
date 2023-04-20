@@ -1,9 +1,9 @@
 import { useAppSelector } from "../../../../store/hook";
-import { Comment, LineWave } from "react-loader-spinner";
+import { Comment } from "react-loader-spinner";
 
 import classnames from "classnames/bind";
 import styles from "./MessageTyping.module.scss";
-import { LazyLoadImage } from "react-lazy-load-image-component";
+
 const cx = classnames.bind(styles);
 const MessageTyping = () => {
   const { usersTyping } = useAppSelector((state) => state.chat);
@@ -21,8 +21,7 @@ const MessageTyping = () => {
                 "display-typing": userTyping.user._id !== user?._id,
               })}
             >
-              <LazyLoadImage
-                effect="blur"
+              <img
                 width={30}
                 height={30}
                 src={userTyping.user.photoURL}

@@ -78,7 +78,7 @@ const MessageSection: React.FC<MessageSectionProps> = ({
       behavior: "smooth",
     });
   };
-  const messageTime = (messCur: Message, messNext: Message) => {
+  const messageTime = (messCur: Message, messPrev: Message) => {
     const weekday = [
       "Chủ nhật",
       "Thứ hai",
@@ -95,7 +95,7 @@ const MessageSection: React.FC<MessageSectionProps> = ({
       day: 24 * 60 * 60 * 1000,
       hour: 60 * 60 * 1000,
     };
-    const dateBefore = new Date(messNext.createdAt);
+    const dateBefore = new Date(messPrev.createdAt);
     const dateAfter = new Date(messCur.createdAt);
     const dateNow = new Date();
     const hour = dateAfter.getHours() - dateBefore.getHours();
@@ -170,7 +170,7 @@ const MessageSection: React.FC<MessageSectionProps> = ({
             inverse={true}
             style={{
               height: "520px",
-              padding: "0 0 35px 0",
+              padding: "40px 0 35px 0",
               display: "flex",
               overflowX: "hidden",
               flexDirection: "column-reverse",
@@ -218,8 +218,7 @@ const MessageSection: React.FC<MessageSectionProps> = ({
                       <div className={cx("user-info")}>
                         <MessageContent
                           messCur={message}
-                          messNext={messageArr[index + 1]}
-                          messPrev={messageArr[index - 1]}
+                          messNext={messageArr[index - 1]}
                           file={file}
                         />
                         <div className={cx("showMessageControl")}>

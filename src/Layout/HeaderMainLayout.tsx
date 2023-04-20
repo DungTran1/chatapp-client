@@ -2,7 +2,7 @@ import { MdAccountCircle, MdGroups } from "react-icons/md";
 import { BiLogOutCircle } from "react-icons/bi";
 import { signOut } from "@firebase/auth";
 import { auth } from "../shared/firebase";
-import { NavLink, useParams } from "react-router-dom";
+import { NavLink, useLocation, useParams } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../store/hook";
 import { signOutCur } from "../reducer/AuthReducer";
 import { BsMoonStars, BsMoonStarsFill } from "react-icons/bs";
@@ -10,13 +10,17 @@ import { changeTheme } from "../reducer/ThemeReducer";
 import styles from "./MainLayout.module.scss";
 import classnames from "classnames/bind";
 import { useRef } from "react";
+import { useQueryClient } from "@tanstack/react-query";
 import { useMediaQuery } from "react-responsive";
 import { useQuerySelector } from "../service/Query/querySelector";
+import { Socket } from "socket.io-client";
 
 const cx = classnames.bind(styles);
-type HeaderMainLayoutProps = {};
-const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
+type HeaderMainLayoutProps = { socket: Socket };
+const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({ socket }) => {
+  const { pathname } = useLocation();
   const darkTheme = useAppSelector((state) => state.theme.darkTheme);
+  const queryClient = useQueryClient();
   const { currentRoom } = useQuerySelector();
   const { roomId } = useParams();
   const isTablet = useMediaQuery({ maxWidth: "46.25em" });
@@ -25,6 +29,7 @@ const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
   const handleSignOut = () => {
     signOut(auth).then(() => {
       dispatch(signOutCur());
+      queryClient.clear();
     });
   };
   const handleChangeTheme = () => {
@@ -68,7 +73,9 @@ const HeaderMainLayout: React.FC<HeaderMainLayoutProps> = ({}) => {
                 {({ isActive }) => (
                   <MdGroups
                     size={30}
-                    color={(isActive && "#647fd7") || "#a8a8ab"}
+                    color={
+                      (pathname.includes("/chat") && "#647fd7") || "#a8a8ab"
+                    }
                   />
                 )}
               </NavLink>

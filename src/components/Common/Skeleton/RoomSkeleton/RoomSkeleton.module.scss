@@ -1,3 +1,4 @@
+@use "../../../../scss/" as *;
 .wrapper {
   width: 310px;
   border-left: 1px solid #e7e7e7;
@@ -45,5 +46,10 @@
   }
   .search {
     border-bottom-color: #363636;
+  }
+}
+@include breakpoints(tablet) {
+  .wrapper {
+    flex: 1;
   }
 }

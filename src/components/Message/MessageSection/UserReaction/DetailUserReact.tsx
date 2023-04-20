@@ -107,8 +107,7 @@ const DetailUserReact: React.FC<DetailUserReactProps> = ({
             className={cx("tab-all", { currentTab: tab === "all" })}
             onClick={() => setTab("all")}
           >
-            <h3>Tat ca </h3>
-            <p className={cx("quantum")}>{data?.length}</p>
+            <h3>Tat ca {data?.length}</h3>
             <div className={cx("line")}></div>
           </div>
           {Object.entries(reactions).map((type, index) => {

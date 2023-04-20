@@ -37,14 +37,15 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
     }
     setIsLoading(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
-      .then(() => {
-        setIsLoading(false);
-      })
+      .then(() => {})
       .catch((error: FirebaseError) => {
         setError(convertErrorCodeToMessage(error.code));
+      })
+      .finally(() => {
         setIsLoading(false);
       });
   };
+  console.log(curUser);
   return (
     <>
       <Title value={"Sign In"} />

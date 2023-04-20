@@ -8,7 +8,6 @@ import Tippy from "@tippyjs/react/headless";
 import { post } from "../../../service/axiosConfig";
 import { useQueryClient } from "@tanstack/react-query";
 
-import { LazyLoadImage } from "react-lazy-load-image-component";
 import Loading from "../../Common/Loading/Loading";
 import {
   BsChevronCompactUp,
@@ -162,15 +161,15 @@ const MessageInfoTab: React.FC<ChatInfoTabProps> = ({
           <div className={cx("upload-room-image")}>
             {isLoading && <Loading />}
             <div>
-              <LazyLoadImage
-                effect="blur"
+              <img
                 src={
                   currentRoom?.type === "Private"
                     ? userDisplay?.user.photoURL || defaultPhoto("user.png")
                     : currentRoom?.photoURL || defaultPhoto("group.png")
                 }
-                width="80"
-                height="80"
+                width={80}
+                height={80}
+                alt=""
               />
               <h4>
                 {currentRoom?.name ||

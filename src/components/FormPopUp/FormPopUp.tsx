@@ -2,7 +2,7 @@ import { useAppSelector } from "../../store/hook";
 import CreateRoomOrAddUser from "./CreateRoomOrAddUser/CreateRoomOrAddUser";
 import { Socket } from "socket.io-client";
 import Overlay from "../Common/Overlay/Overlay";
-import MediaSection from "../MediaFile/MediaFile";
+import MessageMediaFile from "./MessageMediaFile/MessageMediaFile";
 import ChangeNickName from "./ChangeNickName/ChangeNickName";
 import ChangeChatRoomName from "./ChangeChatRoomName/ChangeChatRoomName";
 import { useQuerySelector } from "../../service/Query/querySelector";
@@ -32,7 +32,7 @@ const FormPopUp: React.FC<FormPopUpProps> = ({ socket }) => {
       )}
       {formPopUp === "ChangeNickName" && <ChangeNickName socket={socket} />}
       {formPopUp === "ChangeRoomName" && <ChangeChatRoomName socket={socket} />}
-      {formPopUp === "WatchMediaFile" && <MediaSection />}
+      {formPopUp === "WatchMediaFile" && <MessageMediaFile />}
     </>
   );
 };

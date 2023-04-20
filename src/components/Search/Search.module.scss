@@ -1,5 +1,6 @@
 @use "../../scss" as *;
-//searchBox
+//searchBox\
+
 .search-user-private-chat {
   position: relative;
   border-bottom: 1px solid #f3f3f3;
@@ -77,8 +78,8 @@
     }
   }
 }
-.search-result.users {
-  width: 520px;
+.search-result {
+  width: 308px;
 }
 .dark {
   &.search-user-private-chat {
@@ -94,12 +95,12 @@
   }
 }
 @include breakpoints(tablet) {
-  .search-result.users {
-    width: 430px;
+  .search-result {
+    width: 400px;
   }
 }
 @include breakpoints(mobile) {
-  .search-result.users {
+  .search-result {
     width: 350px;
   }
 }

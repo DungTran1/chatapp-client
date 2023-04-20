@@ -2,8 +2,6 @@ import { useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { Message, Room } from "../../shared/type";
 import SearchRoom from "../Search/SearchUserPrivateChat";
-import { LazyLoadImage } from "react-lazy-load-image-component";
-import "react-lazy-load-image-component/src/effects/blur.css";
 import "react-loading-skeleton/dist/skeleton.css";
 import {
   addSocketEventListener,
@@ -206,10 +204,9 @@ const RoomJoined: React.FC<RoomJoinedProps> = ({ data, socket }) => {
                       isActive ? cx("currentRoom", { dark: darkTheme }) : ""
                     }
                   >
-                    <LazyLoadImage
+                    <img
                       width={50}
                       height={50}
-                      effect="blur"
                       src={
                         room.type === "Group"
                           ? room.photoURL || defaultPhoto("group.png")
