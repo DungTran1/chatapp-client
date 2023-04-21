@@ -1,5 +1,7 @@
+@use "../../../scss" as *;
 .message-info-wrapper {
   overflow: auto;
+  max-height: 100vh;
   width: 250px;
   padding: 10px;
   animation: showUp 0.2s ease-in-out;

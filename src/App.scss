@@ -1,6 +1,6 @@
+@use "./scss/" as *;
 @import url("https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Mukta:wght@300;400;500;600&family=Roboto:wght@100;300;400;500;700&display=swap");
-
 * {
   margin: 0;
   padding: 0;
@@ -57,4 +57,10 @@ button {
 /* Handle on hover */
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba($color: #343434, $alpha: 0.7);
+}
+
+@include breakpoints(mobile) {
+  ::-webkit-scrollbar {
+    display: none;
+  }
 }

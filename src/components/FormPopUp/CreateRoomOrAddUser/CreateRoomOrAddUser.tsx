@@ -11,6 +11,7 @@ import { useQuerySelector } from "../../../service/Query/querySelector";
 
 import styles from "./CreateRoomOrAddUser.module.scss";
 import classnames from "classnames/bind";
+import { defaultPhoto } from "../../../shared/utils";
 
 const cx = classnames.bind(styles);
 type CreateRoomOrAddUserProps = {
@@ -88,19 +89,21 @@ const CreateRoomOrAddUser: React.FC<CreateRoomOrAddUserProps> = ({
             {userAdded.map((user) => {
               return (
                 <div key={user._id}>
-                  <LazyLoadImage
-                    width={60}
-                    height={60}
-                    effect="blur"
-                    src={user.photoURL}
-                    alt=""
-                  />
+                  <div className={cx("photo")}>
+                    <LazyLoadImage
+                      width={60}
+                      height={60}
+                      effect="blur"
+                      src={user.photoURL || defaultPhoto("user.png")}
+                      alt=""
+                    />
+                    <button
+                      onClick={() => handleRemoveUserToListCreateRoom(user)}
+                    >
+                      <AiFillCloseCircle size={15} color="#ff4f4f" />
+                    </button>
+                  </div>
                   <p className={cx("user-name")}>{user.displayName}</p>
-                  <button
-                    onClick={() => handleRemoveUserToListCreateRoom(user)}
-                  >
-                    <AiFillCloseCircle size={15} color="#ff4f4f" />
-                  </button>
                 </div>
               );
             })}

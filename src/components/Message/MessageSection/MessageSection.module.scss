@@ -6,7 +6,8 @@
   }
   .others,
   .self > div {
-    max-width: 80%;
+    max-width: 50%;
+    word-break: break-word;
   }
   .user-info {
     position: relative;
@@ -20,7 +21,7 @@
   .showMessageControl {
     display: none;
   }
-  .message-row:hover .showMessageControl {
+  :not(.notification).message-row:hover .showMessageControl {
     display: block;
   }
   .notification {

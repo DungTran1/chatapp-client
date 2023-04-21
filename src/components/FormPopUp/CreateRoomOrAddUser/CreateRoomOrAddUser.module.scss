@@ -55,12 +55,12 @@
   }
 }
 .list-people-added {
+  overflow: auto;
   display: flex;
   margin: 15px 0;
-  height: 120px;
-  align-items: center;
+  min-height: 120px;
   & > div {
-    margin: 0 15px;
+    padding: 0 5px;
     position: relative;
     & > button {
       position: absolute;
@@ -70,6 +70,7 @@
   }
   .user-name {
     font-size: 1.4rem;
+    min-width: 100px;
   }
 }
 .user-not-added {
@@ -97,7 +98,10 @@
         text-overflow: ellipsis;
       }
     }
-    button {
+    .photo {
+      position: relative;
+    }
+    .photo button {
       position: absolute;
       top: 50%;
       right: 5px;

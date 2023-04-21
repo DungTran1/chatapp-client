@@ -109,13 +109,7 @@ const MessageComp: React.FC<MessageProps> = ({ socket }) => {
                 <header>
                   <div>
                     {isTablet && (
-                      <Link
-                        to={"/chat"}
-                        className={cx("back-room")}
-                        onClick={() => {
-                          // setIsOpenMessage(false);
-                        }}
-                      >
+                      <Link to={"/chat"} className={cx("back-room")}>
                         <MdNavigateBefore size={25} color="#8141ff" />
                       </Link>
                     )}

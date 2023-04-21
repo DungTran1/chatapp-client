@@ -53,7 +53,6 @@ const MessageSection: React.FC<MessageSectionProps> = ({
   }, [messages]);
   const scroll = scrollRef.current?.childNodes[0]
     ?.childNodes[0] as HTMLDivElement;
-
   useEffect(() => {
     if (scroll) {
       const handleToggleScrollBottom = () => {
@@ -140,6 +139,7 @@ const MessageSection: React.FC<MessageSectionProps> = ({
       }
     }
   };
+
   return (
     <>
       <div

@@ -9,6 +9,7 @@ import { setFormPopUp } from "../../../../reducer/ChatReducer";
 import { useQuerySelector } from "../../../../service/Query/querySelector";
 import { CiPlay1 } from "react-icons/ci";
 import Tippy from "@tippyjs/react/headless";
+import { defaultPhoto } from "../../../../shared/utils";
 
 const cx = classnames.bind(styles);
 type MessageContentProps = {
@@ -60,7 +61,7 @@ const MessageContent: React.FC<MessageContentProps> = ({
           }}
         >
           <img
-            src={messCur.actedByUser?.photoURL}
+            src={messCur.actedByUser?.photoURL || defaultPhoto("user.png")}
             className={cx("user-photo")}
             alt=""
           />
@@ -116,12 +117,12 @@ const MessageContent: React.FC<MessageContentProps> = ({
                   if (src.match(/.mp4/g)?.length) {
                     return (
                       <div
+                        key={index}
                         className={cx("video")}
                         onClick={() => handleOpenMedia(src)}
                       >
                         <ReactPlayer
                           playsinline={true}
-                          key={src}
                           width="200px"
                           height="200px"
                           url={src}
