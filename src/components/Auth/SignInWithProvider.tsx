@@ -45,7 +45,7 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
         setIsLoading(false);
       });
   };
-  console.log(curUser);
+
   return (
     <>
       <Title value={"Sign In"} />

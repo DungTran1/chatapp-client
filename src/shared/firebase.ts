@@ -3,7 +3,7 @@ import { getAuth } from "firebase/auth";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBVNAz-rDEoQZ9Cu7AtYFT1a3gr_6cajUA",
-  authDomain: "groupchat-25273.firebaseapp.com",
+  authDomain: "dungtran-pro.onrender.com",
   databaseURL: "https://groupchat-25273-default-rtdb.firebaseio.com",
   projectId: "groupchat-25273",
   // ...
