@@ -79,8 +79,8 @@ export const useActionQuery = () => {
     );
   };
   const resetRoom = () => {
-    queryClient.invalidateQueries(["room"]);
-    queryClient.invalidateQueries(["currentRoom"]);
+    queryClient.invalidateQueries(["room"], { exact: true });
+    queryClient.invalidateQueries(["currentRoom"], { exact: true });
   };
   const UpdateReaction = (messageId: string, user: User, name: string) => {
     queryClient.setQueryData(

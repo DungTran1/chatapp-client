@@ -28,9 +28,26 @@ const socket = io(process.env.REACT_APP_API_URL as string);
 
 const App = () => {
   const dispatch = useAppDispatch();
-  const user = useAppSelector((state) => state.auth.user);
+  const curUser = useAppSelector((state) => state.auth.user);
   const [isOnline, setIsOnline] = useState(true);
 
+  useEffect(() => {
+    const unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
+      if (!user) {
+        console.log("not logged");
+        return;
+      } else {
+        if (!curUser) {
+          const res = await signIn(user.uid);
+          dispatch(getSignIn(res));
+        }
+      }
+    });
+    return () => {
+      unregisterAuthObserver();
+    }; // Make sure we un-register Firebase observers when the component unmounts.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   useEffect(() => {
     const handleOnline = () => {
       setIsOnline(true);
@@ -46,21 +63,6 @@ const App = () => {
       window.removeEventListener("online", handleOnline);
       window.removeEventListener("offline", handleOffline);
     };
-  }, []);
-  useEffect(() => {
-    const unregisterAuthObserver = onAuthStateChanged(auth, async (user) => {
-      if (!user) {
-        console.log("not logged");
-        return;
-      } else {
-        const res = await signIn(user.uid);
-        dispatch(getSignIn(res));
-      }
-    });
-    return () => {
-      unregisterAuthObserver();
-    }; // Make sure we un-register Firebase observers when the component unmounts.
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
   useEffect(() => {
     const connected = () => {
@@ -79,8 +81,8 @@ const App = () => {
       socket.disconnect();
     };
   }, []);
-  if (navigator.onLine === true && user) {
-    socket.emit("user_online", { userId: user?._id });
+  if (navigator.onLine === true && curUser) {
+    socket.emit("user_online", { userId: curUser?._id });
   }
 
   return (

@@ -1,4 +1,4 @@
-import React, { Fragment, useMemo, useRef, useState, useEffect } from "react";
+import React, { Fragment, useMemo } from "react";
 import { RotatingLines } from "react-loader-spinner";
 import { Message, Messages } from "../../../shared/type";
 import "react-lazy-load-image-component/src/effects/blur.css";
@@ -19,7 +19,7 @@ import {
   FetchNextPageOptions,
   InfiniteQueryObserverResult,
 } from "@tanstack/react-query";
-import { AiOutlineArrowDown } from "react-icons/ai";
+
 import MessageContent from "./MessageContent/MessageContent";
 const cx = classnames.bind(styles);
 type MessageSectionProps = {
@@ -40,8 +40,6 @@ const MessageSection: React.FC<MessageSectionProps> = ({
 }) => {
   const darkTheme = useAppSelector((state) => state.theme.darkTheme);
   const user = useAppSelector((state) => state.auth.user);
-  const scrollRef = useRef<HTMLDivElement>(null);
-  const [isScrollToBottom, setIsScrollToBottom] = useState(false);
   const file = useMemo(() => {
     const files = messages
       .filter((e) => e.type !== "Revocation")
@@ -51,32 +49,6 @@ const MessageSection: React.FC<MessageSectionProps> = ({
 
     return file;
   }, [messages]);
-  const scroll = scrollRef.current?.childNodes[0]
-    ?.childNodes[0] as HTMLDivElement;
-  useEffect(() => {
-    if (scroll) {
-      const handleToggleScrollBottom = () => {
-        const scrollTop = scroll.scrollTop;
-        if (scrollTop < -60) {
-          setIsScrollToBottom(true);
-        } else {
-          setIsScrollToBottom(false);
-        }
-      };
-
-      scroll.addEventListener("scroll", handleToggleScrollBottom);
-
-      return () => {
-        scroll.removeEventListener("scroll", handleToggleScrollBottom);
-      };
-    }
-  }, [scroll]);
-  const handleScrollToBottom = () => {
-    scroll.scrollTo({
-      top: 0,
-      behavior: "smooth",
-    });
-  };
   const messageTime = (messCur: Message, messPrev: Message) => {
     const weekday = [
       "Chủ nhật",
@@ -144,7 +116,6 @@ const MessageSection: React.FC<MessageSectionProps> = ({
     <>
       <div
         id="scrollableDiv"
-        ref={scrollRef}
         style={{
           height: "520px",
           overflowX: "hidden",
@@ -154,17 +125,6 @@ const MessageSection: React.FC<MessageSectionProps> = ({
         }}
         className={cx("message-content", { dark: darkTheme })}
       >
-        {isScrollToBottom && (
-          <>
-            <div
-              className={cx("scroll-to-bottom")}
-              onClick={handleScrollToBottom}
-            >
-              <AiOutlineArrowDown size="20px" color="#ff4040" />
-            </div>
-            <div className={cx("scroll-to-bottom-gradient")}></div>
-          </>
-        )}
         <>
           <InfiniteScroll
             inverse={true}

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Socket } from "socket.io-client";
 import { Message, User } from "../../../../shared/type";
 import { getReactionEmoji } from "../../../../shared/utils";
@@ -78,4 +78,4 @@ const UserReacted: React.FC<UserReactedProps> = ({ message, socket }) => {
   );
 };
 
-export default UserReacted;
+export default React.memo(UserReacted);

@@ -8,9 +8,11 @@ import Loading from "../Common/Loading/Loading";
 
 import styles from "./SignIn.module.scss";
 import classnames from "classnames/bind";
-import { useAppSelector } from "../../store/hook";
+import { useAppDispatch, useAppSelector } from "../../store/hook";
 import Title from "../Common/Title";
 import { FirebaseError } from "firebase/app";
+import { signIn } from "../../service/api";
+import { getSignIn } from "../../reducer/AuthReducer";
 const cx = classnames.bind(styles);
 type IFormInput = {
   username: string;
@@ -23,6 +25,7 @@ type SignInWithProviderProps = {
 const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
   setChangeForm,
 }) => {
+  const dispatch = useAppDispatch();
   const curUser = useAppSelector((state) => state.auth.user);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState("");
@@ -37,7 +40,10 @@ const SignInWithProvider: React.FC<SignInWithProviderProps> = ({
     }
     setIsLoading(true);
     signInWithEmailAndPassword(auth, data.email, data.password)
-      .then(() => {})
+      .then(async (userCredential) => signIn(userCredential.user.uid))
+      .then((res) => {
+        dispatch(getSignIn(res));
+      })
       .catch((error: FirebaseError) => {
         setError(convertErrorCodeToMessage(error.code));
       })
