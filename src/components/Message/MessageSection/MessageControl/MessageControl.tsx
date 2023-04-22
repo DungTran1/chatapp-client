@@ -82,7 +82,6 @@ const MoreFunction: React.FC<MoreFunctionProps> = ({
         </button>
         <Tippy
           interactive
-          touch={["hold", 1000]}
           trigger="click"
           render={() => {
             const listReactEmo = [
